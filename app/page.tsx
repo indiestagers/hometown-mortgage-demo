@@ -4,6 +4,9 @@ import { LedgerRail } from "@/components/LedgerRail";
 import { Estimator } from "@/components/Estimator";
 import { StartForm } from "@/components/StartForm";
 import { Reveal } from "@/components/Reveal";
+import { LineReveal } from "@/components/motion/LineReveal";
+import { PinnedProcess } from "@/components/motion/PinnedProcess";
+import { HeroPlate } from "@/components/motion/HeroPlate";
 import { ButtonLink, Eyebrow, Section } from "@/components/primitives";
 
 export default function Home() {
@@ -37,18 +40,20 @@ export default function Home() {
    ──────────────────────────────────────────────────────────── */
 function Hero() {
   return (
-    <Section className="pt-16 pb-12 md:pt-20 md:pb-16">
-      <div className="grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
+    <Section className="relative pt-16 pb-12 md:pt-20 md:pb-16">
+      <HeroPlate />
+      <div className="relative grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
           <Reveal immediate>
             <Eyebrow>Kansas City · Kansas &amp; Missouri</Eyebrow>
           </Reveal>
 
-          <Reveal immediate delay={60}>
-            <h1 className="mt-6 text-[clamp(2.75rem,5.5vw,4.25rem)]">
-              A mortgage broker who answers his own phone.
-            </h1>
-          </Reveal>
+          <LineReveal
+            immediate
+            as="h1"
+            className="mt-6 text-[40px] leading-[1.06] md:text-[56px] lg:text-[64px]"
+            lines={["A mortgage broker", "who answers", "his own phone."]}
+          />
 
           <Reveal immediate delay={120}>
             <p className="measure mt-6 text-[20px] text-ink-muted">
@@ -106,11 +111,11 @@ function Thesis() {
           <Reveal>
             <Eyebrow>Why work with me</Eyebrow>
           </Reveal>
-          <Reveal delay={60}>
-            <h2 className="mt-6 max-w-[20ch] text-[clamp(2rem,4.5vw,3rem)]">
-              The big lenders give you a case number. I give you my cell.
-            </h2>
-          </Reveal>
+          <LineReveal
+            delay={0.05}
+            className="mt-6 max-w-[20ch] text-[30px] leading-[1.08] md:text-[40px]"
+            lines={["The big lenders give", "you a case number.", "I give you my cell."]}
+          />
           <Reveal delay={120}>
             <div className="measure mt-6 space-y-5 text-ink-muted">
               <p>
@@ -189,11 +194,11 @@ function Programs() {
       <Reveal>
         <Eyebrow>Loan programs</Eyebrow>
       </Reveal>
-      <Reveal delay={60}>
-        <h2 className="mt-6 max-w-[22ch] text-[clamp(2rem,4.5vw,3rem)]">
-          Four ways to buy. The right one depends on you.
-        </h2>
-      </Reveal>
+      <LineReveal
+            delay={0.05}
+            className="mt-6 max-w-[22ch] text-[30px] leading-[1.08] md:text-[40px]"
+            lines={["Four ways to buy. The", "right one depends on you."]}
+          />
       <Reveal delay={120}>
         <p className="measure mt-6 text-ink-muted">
           Every lender offers these. The difference is whether someone actually
@@ -247,11 +252,11 @@ function Estimate() {
       <Reveal>
         <Eyebrow>Payment estimator</Eyebrow>
       </Reveal>
-      <Reveal delay={60}>
-        <h2 className="mt-6 max-w-[20ch] text-[clamp(2rem,4.5vw,3rem)]">
-          Run the numbers before you call anyone.
-        </h2>
-      </Reveal>
+      <LineReveal
+            delay={0.05}
+            className="mt-6 max-w-[20ch] text-[30px] leading-[1.08] md:text-[40px]"
+            lines={["Run the numbers", "before you call anyone."]}
+          />
       <Reveal delay={120}>
         <p className="measure mt-6 text-ink-muted">
           Real math, including taxes, insurance, and mortgage insurance — the
@@ -298,28 +303,15 @@ function Process() {
       <Reveal>
         <Eyebrow>How it works</Eyebrow>
       </Reveal>
-      <Reveal delay={60}>
-        <h2 className="mt-6 max-w-[18ch] text-[clamp(2rem,4.5vw,3rem)]">
-          Four steps, and you always know which one you&apos;re in.
-        </h2>
-      </Reveal>
+      <LineReveal
+            delay={0.05}
+            className="mt-6 max-w-[18ch] text-[30px] leading-[1.08] md:text-[40px]"
+            lines={["Four steps, and you always", "know which one you’re in."]}
+          />
 
-      {/* <li> must be a direct child of <ol> — the Reveal wrapper goes inside. */}
-      <ol className="mt-12 grid gap-px border border-rule bg-rule md:grid-cols-2 lg:grid-cols-4">
-        {STEPS.map((s, i) => (
-          <li key={s.n} className="h-full bg-paper">
-            <Reveal delay={i * 60} className="h-full">
-              <div className="h-full p-7">
-                <span className="tnum text-[13px] text-brick">{s.n}</span>
-                <h3 className="mt-3 text-[21px]">{s.t}</h3>
-                <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
-                  {s.d}
-                </p>
-              </div>
-            </Reveal>
-          </li>
-        ))}
-      </ol>
+      <div className="mt-12">
+        <PinnedProcess steps={STEPS} />
+      </div>
     </Section>
   );
 }
@@ -331,11 +323,11 @@ function Reviews() {
       <Reveal>
         <Eyebrow>In their words</Eyebrow>
       </Reveal>
-      <Reveal delay={60}>
-        <h2 className="mt-6 max-w-[20ch] text-[clamp(2rem,4.5vw,3rem)]">
-          The referrals are the business.
-        </h2>
-      </Reveal>
+      <LineReveal
+            delay={0.05}
+            className="mt-6 max-w-[20ch] text-[30px] leading-[1.08] md:text-[40px]"
+            lines={["The referrals", "are the business."]}
+          />
 
       {/* Deliberately uneven column split — editorial, not a 3-up card grid. */}
       <div className="mt-12 grid gap-x-14 gap-y-12 md:grid-cols-2">
@@ -378,11 +370,11 @@ function Area() {
           <Reveal>
             <Eyebrow>Where I lend</Eyebrow>
           </Reveal>
-          <Reveal delay={60}>
-            <h2 className="mt-6 text-[clamp(2rem,4.5vw,3rem)]">
-              Both sides of the state line.
-            </h2>
-          </Reveal>
+          <LineReveal
+            delay={0.05}
+            className="mt-6 text-[30px] leading-[1.08] md:text-[40px]"
+            lines={["Both sides of", "the state line."]}
+          />
           <Reveal delay={120}>
             <p className="measure mt-6 text-ink-muted">
               The KC metro is two states, dozens of school districts, and wildly
@@ -422,11 +414,11 @@ function Start() {
           <Reveal>
             <Eyebrow>Get started</Eyebrow>
           </Reveal>
-          <Reveal delay={60}>
-            <h2 className="mt-6 max-w-[16ch] text-[clamp(2rem,4.5vw,3rem)]">
-              Three questions. Then we talk.
-            </h2>
-          </Reveal>
+          <LineReveal
+            delay={0.05}
+            className="mt-6 max-w-[16ch] text-[30px] leading-[1.08] md:text-[40px]"
+            lines={["Three questions.", "Then we talk."]}
+          />
           <Reveal delay={120}>
             <p className="measure mt-6 text-ink-muted">
               No credit pull, no application, no obligation. If it turns out

@@ -1,0 +1,3 @@
+# Unapproved concept demo of a real business. Do not index.
+User-agent: *
+Disallow: /

@@ -41,8 +41,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-  robots: { index: true, follow: true },
-  alternates: { canonical: "/" },
+  /**
+   * NOINDEX — deliberate and important.
+   *
+   * This is an unapproved concept demo of a real, licensed business. It must
+   * never be indexed, never rank against Josh's actual site, and never be
+   * mistaken by a consumer for the real thing. Flip this only after the client
+   * approves the work and it moves to the production domain.
+   */
+  robots: { index: false, follow: false, nocache: true },
 };
 
 /** LocalBusiness + FinancialService schema — absent from the current site. */

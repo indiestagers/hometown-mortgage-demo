@@ -91,26 +91,21 @@ const CALCULATORS = [
     blurb: "Full payment on a house at a given price, taxes and insurance included.",
   },
   {
-    href: "/calculators/refinance",
-    name: "Refinance",
-    blurb: "Break-even on closing costs, and what a longer term really costs you.",
-  },
-  {
     href: "/calculators/affordability",
     name: "Affordability",
     blurb: "Works backwards from your income and debts to a purchase price.",
   },
 ];
 
-/** Cross-links between the three calculators. `exclude` hides the current one. */
+/** Cross-links between the calculators. `exclude` hides the current one. */
 export function CalculatorNav({ exclude }: { exclude?: string }) {
   const items = CALCULATORS.filter((c) => c.href !== exclude);
   return (
     <Section className="py-16 md:py-20">
       <h2 className="text-[clamp(1.5rem,3.5vw,2rem)]">
-        {exclude ? "The other calculators" : "Three calculators"}
+        {exclude ? "The other calculator" : "Two calculators"}
       </h2>
-      <ul className="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-2">
         {items.map((c) => (
           <li key={c.href} className="bg-paper">
             <Link

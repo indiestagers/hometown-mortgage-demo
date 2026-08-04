@@ -115,6 +115,24 @@
   }
 }
 
+/* Masked line wipe for display headings. CSS-only by design — see LineReveal. */
+@layer utilities {
+  .line-reveal__line {
+    transform: translateY(110%);
+    transition: transform 620ms var(--ease-out);
+    will-change: transform;
+  }
+  .line-reveal[data-shown="true"] .line-reveal__line {
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .line-reveal__line {
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
 /* Scroll reveal — opacity + 8px only. Nothing scales or bounces. */
 @layer utilities {
   .reveal {
