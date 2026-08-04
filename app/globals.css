@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─────────────────────────────────────────────────────────────
+   Design tokens — see docs/DESIGN.md. Do not introduce colors,
+   radii, or shadows that are not defined here.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --color-paper: #f7f4ef;
+  --color-paper-sunk: #efeae1;
+  --color-ink: #17130f;
+  --color-ink-muted: #5a5148;
+  /* 5.05:1 on --color-paper-sunk, 5.36:1 on --color-paper.
+     Do not lighten: 12px eyebrow text gets no WCAG large-text exemption. */
+  --color-ink-faint: #6b6157;
+  --color-rule: #ddd5c9;
+  --color-brick: #9e2b25;
+  --color-brick-deep: #7a1f1b;
+  --color-brass: #a67c34;
+  --color-positive: #2f6b4f;
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --radius-sm: 2px;
+
+  --shadow-float: 0 1px 2px rgb(23 19 15 / 0.06), 0 8px 24px rgb(23 19 15 / 0.06);
+
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 96px;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Display serif: hierarchy through size, never weight. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brick);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  ::selection {
+    background: var(--color-brick);
+    color: var(--color-paper);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* All numerals align. Non-negotiable on a lending site. */
+  .tnum {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* Small caps label. Always paired with a brass rule. */
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+  }
+
+  .rule-brass {
+    width: 28px;
+    height: 1px;
+    background: var(--color-brass);
+    flex: none;
+  }
+
+  .measure {
+    max-width: 68ch;
+  }
+}
+
+/* Scroll reveal — opacity + 8px only. Nothing scales or bounces. */
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 320ms var(--ease-out),
+      transform 320ms var(--ease-out);
+  }
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
