@@ -1,18 +1,27 @@
+import Image from "next/image";
 import Link from "next/link";
 import { site, brokerage } from "@/site.config";
 import { ButtonLink } from "./primitives";
+
+/** next/image does not prepend basePath when images.unoptimized is set. */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 // Padding sits OUTSIDE the max-width wrapper, exactly as Section does it —
 // otherwise the logo misaligns with every heading above 1456px.
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[color:var(--color-rule-dim)] bg-ink/95 px-6 backdrop-blur-sm md:px-10">
+    <header className="sticky top-0 z-40 border-b border-rule bg-paper/95 px-6 backdrop-blur-sm md:px-10">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 py-4">
-        <Link href="/" className="flex min-w-0 items-baseline gap-2">
-          <span className="font-display text-[18px] leading-tight text-paper sm:text-[21px] sm:leading-none">
-            The Hometown Mortgage
-          </span>
-          <span className="hidden text-[12px] text-[color:var(--color-paper-dim)] md:inline">
+        <Link href="/" className="flex min-w-0 items-center gap-3">
+          <Image
+            src={`${BASE}/media/hometown-logo.svg`}
+            alt="The Hometown Mortgage — your neighborhood lender"
+            width={469}
+            height={252}
+            priority
+            className="h-11 w-auto md:h-12"
+          />
+          <span className="hidden text-[12px] text-ink-faint lg:inline">
             Kansas City
           </span>
         </Link>
@@ -23,7 +32,7 @@ export function Header() {
           <a
             href={site.loanOfficer.phoneHref}
             aria-label={`Call Josh at ${site.loanOfficer.phone}`}
-            className="flex items-center gap-2 rounded-[2px] px-2 py-3 text-paper hover:text-[color:var(--color-paper-dim)] sm:px-3"
+            className="flex items-center gap-2 rounded-[2px] px-2 py-3 text-ink hover:text-brick sm:px-3"
           >
             <PhoneIcon />
             <span className="tnum hidden text-[15px] lg:inline">
@@ -50,7 +59,13 @@ export function Footer() {
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <p className="font-display text-[22px]">The Hometown Mortgage</p>
+            <Image
+              src={`${BASE}/media/hometown-logo.svg`}
+              alt="The Hometown Mortgage — your neighborhood lender"
+              width={469}
+              height={252}
+              className="h-16 w-auto"
+            />
             <p className="mt-2 text-[14px] text-ink-muted">
               {site.loanOfficer.name}, {site.loanOfficer.title}
             </p>

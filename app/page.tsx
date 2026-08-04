@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { site, programs, testimonials, brokerage } from "@/site.config";
 import { Header, Footer } from "@/components/Chrome";
@@ -9,6 +10,13 @@ import { LineReveal } from "@/components/motion/LineReveal";
 import { PinnedProcess } from "@/components/motion/PinnedProcess";
 import { HeroPlate } from "@/components/motion/HeroPlate";
 import { ButtonLink, Eyebrow, Section } from "@/components/primitives";
+
+/**
+ * With `images.unoptimized` (required for static export) next/image passes the
+ * src straight through WITHOUT prepending basePath — same trap that made the
+ * hero video 404 on Pages. public/ assets must be prefixed by hand.
+ */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default function Home() {
   return (
@@ -150,40 +158,36 @@ function Thesis() {
           </Reveal>
         </div>
 
-        {/* Headshot placeholder — sized to the final aspect ratio. */}
         <Reveal delay={180}>
           <figure className="lg:pt-16">
-            <div className="relative aspect-[4/5] w-full border border-rule bg-paper-sunk">
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
-                <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  className="text-ink-faint"
-                  aria-hidden="true"
-                >
-                  <circle cx="12" cy="8.5" r="4" />
-                  <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-                </svg>
-                <p className="text-[12px] leading-relaxed text-ink-faint">
-                  Photo placeholder
-                  <br />
-                  Josh&apos;s headshot goes here
-                </p>
+            {site.loanOfficer.photo ? (
+              // Source is circle-masked onto OPAQUE white, so the square crop
+              // is rendered as a circle — border-radius clips the white corners
+              // and no cutout is needed. The brass ring gives it an edge against
+              // the paper background.
+              <div className="relative mx-auto w-full max-w-[300px]">
+                <div className="aspect-square overflow-hidden rounded-full border border-brass/50 bg-paper-sunk">
+                  <Image
+                    src={`${BASE}${site.loanOfficer.photo}`}
+                    alt={`${site.loanOfficer.name}, ${site.loanOfficer.title}`}
+                    width={800}
+                    height={800}
+                    className="h-full w-full object-cover"
+                    sizes="(min-width: 1024px) 300px, 60vw"
+                    priority={false}
+                  />
+                </div>
               </div>
-              <span
-                className="absolute left-0 top-0 h-3 w-3 border-l border-t border-brass"
-                aria-hidden="true"
-              />
-              <span
-                className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-brass"
-                aria-hidden="true"
-              />
-            </div>
-            <figcaption className="mt-3 text-[13px] text-ink-muted">
+            ) : (
+              <div className="relative aspect-[4/5] w-full border border-rule bg-paper-sunk">
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
+                  <p className="text-[13px] leading-relaxed text-ink-faint">
+                    Photo placeholder
+                  </p>
+                </div>
+              </div>
+            )}
+            <figcaption className="mt-4 text-center text-[13px] text-ink-muted lg:text-left">
               {site.loanOfficer.name}
               <span className="block text-ink-faint">
                 {site.loanOfficer.title} ·{" "}

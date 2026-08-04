@@ -31,8 +31,19 @@ export const BROKERAGES = {
   },
 } as const;
 
-/** NEEDS_CONFIRMATION — which brokerage currently sponsors Josh's license. */
-export const brokerage = BROKERAGES.BAYSHORE;
+/**
+ * NEEDS_CONFIRMATION — which brokerage currently sponsors Josh's license.
+ *
+ * Set to CANOPY because the client-supplied logo (updated 2025-02-18, the most
+ * recently changed asset on the live site) reads "POWERED BY CANOPY MORTGAGE".
+ * Pairing that logo with a Bayshore disclosure would reproduce the exact
+ * dual-lender conflict flagged in docs/AUDIT.md.
+ *
+ * The live site still routes "Apply Now" to Bayshore, so this remains genuinely
+ * unresolved. Josh must confirm, and compliance must approve the disclosure
+ * language, before launch.
+ */
+export const brokerage = BROKERAGES.CANOPY;
 
 export const site = {
   name: "The Hometown Mortgage",
@@ -50,8 +61,13 @@ export const site = {
     phoneHref: "tel:+19136007811",
     email: "jpennebaker@bsmfunding.com", // NEEDS_CONFIRMATION
     calendly: "https://calendly.com/jpennebaker-1",
-    /** NEEDS_CONFIRMATION — awaiting real headshot. Placeholder frame is rendered. */
-    photo: null as string | null,
+    /**
+     * Supplied by the client. Source was a circle-masked PNG on an OPAQUE white
+     * background (the alpha channel exists but is fully opaque), so it is
+     * cropped square to the mask and rendered as a circle in CSS — that clips
+     * the white corners without needing a cutout.
+     */
+    photo: "/media/josh-pennebaker.jpg" as string | null,
   },
 
   social: {
