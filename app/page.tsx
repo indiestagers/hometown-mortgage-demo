@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site, programs, testimonials, brokerage } from "@/site.config";
 import { Header, Footer } from "@/components/Chrome";
 import { LedgerRail } from "@/components/LedgerRail";
@@ -267,6 +268,24 @@ function Estimate() {
       <Reveal delay={180}>
         <div className="mt-12">
           <Estimator />
+        </div>
+      </Reveal>
+
+      <Reveal delay={220}>
+        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-rule pt-6 text-[15px]">
+          <span className="text-ink-faint">Go deeper:</span>
+          <Link
+            href="/calculators/purchase/"
+            className="text-brick underline underline-offset-4 hover:text-brick-deep"
+          >
+            Full purchase calculator →
+          </Link>
+          <Link
+            href="/calculators/affordability/"
+            className="text-brick underline underline-offset-4 hover:text-brick-deep"
+          >
+            What can I afford? →
+          </Link>
         </div>
       </Reveal>
     </Section>

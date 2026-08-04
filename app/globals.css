@@ -133,6 +133,52 @@
   }
 }
 
+/* Process section: rail fills and steps rise, once, on entry. Not scroll-linked. */
+@layer utilities {
+  .process__rail {
+    width: 0;
+    transition: width 1400ms var(--ease-out);
+  }
+  .process[data-shown="true"] .process__rail {
+    width: 100%;
+  }
+  .process__step {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 500ms var(--ease-out),
+      transform 500ms var(--ease-out);
+  }
+  .process[data-shown="true"] .process__step {
+    opacity: 1;
+    transform: none;
+  }
+  .process__mark {
+    width: 0;
+    transition: width 500ms var(--ease-out);
+  }
+  .process[data-shown="true"] .process__mark {
+    width: 28px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .process__rail {
+      width: 100%;
+    }
+    .process__step {
+      opacity: 1;
+      transform: none;
+    }
+    .process__mark {
+      width: 28px;
+    }
+    .process__rail,
+    .process__step,
+    .process__mark {
+      transition: none;
+    }
+  }
+}
+
 /* Scroll reveal — opacity + 8px only. Nothing scales or bounces. */
 @layer utilities {
   .reveal {

@@ -17,6 +17,13 @@ import { useEffect, useRef, useState } from "react";
  *  - preload="none" so nothing is fetched before we decide to mount it.
  *  - Skipped entirely under reduced motion and on save-data / 2g connections.
  */
+/**
+ * basePath is NOT applied to raw `src` attributes or inline-style url() —
+ * Next only rewrites next/image, next/link and imported assets. Files served
+ * from public/ must be prefixed by hand or they 404 on GitHub Pages.
+ */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export function HeroPlate() {
   const [showVideo, setShowVideo] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -56,23 +63,27 @@ export function HeroPlate() {
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-[0.26] [filter:grayscale(0.9)_contrast(0.85)_brightness(1.12)]"
-        style={{ backgroundImage: "url(/media/kansas-sunflowers-poster.jpg)" }}
+        style={{
+          backgroundImage: `url(${BASE}/media/kansas-sunflowers-poster.jpg)`,
+        }}
       />
       {showVideo && (
         <video
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover opacity-[0.26] [filter:grayscale(0.9)_contrast(0.85)_brightness(1.12)]"
-          src="/media/kansas-sunflowers.mp4"
-          poster="/media/kansas-sunflowers-poster.jpg"
+          src={`${BASE}/media/kansas-sunflowers.mp4`}
+          poster={`${BASE}/media/kansas-sunflowers-poster.jpg`}
           muted
           loop
           playsInline
           preload="none"
         />
       )}
-      {/* Paper veil: keeps the left column clean so the headline never sits on
-          busy pixels, and guarantees text contrast regardless of frame. */}
-      <div className="absolute inset-0 bg-[linear-gradient(100deg,var(--color-paper)_38%,color-mix(in_srgb,var(--color-paper)_72%,transparent)_78%,color-mix(in_srgb,var(--color-paper)_58%,transparent)_100%)]" />
+      {/* Paper veil: keeps text off busy pixels and guarantees contrast.
+          The direction has to change with the layout — a horizontal wipe
+          tuned for the wide two-column hero covers a 390px screen almost
+          entirely, which erased the texture on mobile. Vertical below md. */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-paper)_18%,color-mix(in_srgb,var(--color-paper)_62%,transparent)_60%,color-mix(in_srgb,var(--color-paper)_45%,transparent)_100%)] md:bg-[linear-gradient(100deg,var(--color-paper)_38%,color-mix(in_srgb,var(--color-paper)_72%,transparent)_78%,color-mix(in_srgb,var(--color-paper)_58%,transparent)_100%)]" />
       {/* Feather the bottom edge — without this the plate ends on a hard
           rectangle and reads as a pasted-in box rather than page texture. */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-[linear-gradient(to_bottom,transparent,var(--color-paper))]" />
