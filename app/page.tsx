@@ -41,23 +41,28 @@ export default function Home() {
    ──────────────────────────────────────────────────────────── */
 function Hero() {
   return (
-    <Section className="relative pt-16 pb-12 md:pt-20 md:pb-16">
+    <Section className="relative bg-ink pt-20 pb-28 md:pt-28 md:pb-36">
       <HeroPlate />
       <div className="relative grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
           <Reveal immediate>
-            <Eyebrow>Kansas City · Kansas &amp; Missouri</Eyebrow>
+            <div className="flex items-center gap-3">
+              <span className="rule-brass" aria-hidden="true" />
+              <span className="eyebrow !text-[color:var(--color-paper-dim)]">
+                Kansas City · Kansas &amp; Missouri
+              </span>
+            </div>
           </Reveal>
 
           <LineReveal
             immediate
             as="h1"
-            className="mt-6 text-[40px] leading-[1.06] md:text-[56px] lg:text-[64px]"
+            className="mt-6 text-paper text-[40px] leading-[1.06] md:text-[56px] lg:text-[64px]"
             lines={["A mortgage broker", "who answers", "his own phone."]}
           />
 
           <Reveal immediate delay={120}>
-            <p className="measure mt-6 text-[20px] text-ink-muted">
+            <p className="measure mt-6 text-[20px] text-[color:var(--color-paper-dim)]">
               I&apos;m Josh Pennebaker. I&apos;ve spent my career doing home loans
               in the Kansas City metro — and I do it the way I&apos;d want it done
               for my own family. You get my direct line, not a queue.
@@ -67,7 +72,11 @@ function Hero() {
           <Reveal immediate delay={180}>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <ButtonLink href="#start">See what you qualify for</ButtonLink>
-              <ButtonLink href="#estimate" variant="secondary">
+              <ButtonLink
+                href="#estimate"
+                variant="secondary"
+                className="border-[color:var(--color-rule-dim)] text-paper hover:border-paper hover:bg-[color:color-mix(in_srgb,var(--color-paper)_10%,transparent)]"
+              >
                 Estimate a payment
               </ButtonLink>
             </div>
@@ -79,7 +88,7 @@ function Hero() {
             transparency" claims on the live site, and gives the hero a
             right-hand counterweight instead of dead space. */}
         <Reveal immediate delay={240} className="lg:pt-14">
-          <dl className="border-t border-rule">
+          <dl className="border-t border-[color:var(--color-rule-dim)]">
             {[
               { k: "Same day", v: "Typical callback — not a queue ticket" },
               { k: "$0", v: "Down payment on VA and USDA loans" },
@@ -88,12 +97,12 @@ function Hero() {
             ].map((s) => (
               <div
                 key={s.v}
-                className="flex items-baseline gap-5 border-b border-rule py-4"
+                className="flex items-baseline gap-5 border-b border-[color:var(--color-rule-dim)] py-4"
               >
-                <dt className="tnum w-24 shrink-0 text-[19px] leading-none text-ink">
+                <dt className="tnum w-24 shrink-0 text-[19px] leading-none text-paper">
                   {s.k}
                 </dt>
-                <dd className="text-[14px] leading-snug text-ink-muted">{s.v}</dd>
+                <dd className="text-[14px] leading-snug text-[color:var(--color-paper-dim)]">{s.v}</dd>
               </div>
             ))}
           </dl>

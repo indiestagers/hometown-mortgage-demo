@@ -6,13 +6,13 @@ import { ButtonLink } from "./primitives";
 // otherwise the logo misaligns with every heading above 1456px.
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-rule bg-paper/90 px-6 backdrop-blur-sm md:px-10">
+    <header className="sticky top-0 z-40 border-b border-[color:var(--color-rule-dim)] bg-ink/95 px-6 backdrop-blur-sm md:px-10">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 py-4">
         <Link href="/" className="flex min-w-0 items-baseline gap-2">
-          <span className="font-display text-[18px] leading-tight sm:text-[21px] sm:leading-none">
+          <span className="font-display text-[18px] leading-tight text-paper sm:text-[21px] sm:leading-none">
             The Hometown Mortgage
           </span>
-          <span className="hidden text-[12px] text-ink-faint md:inline">
+          <span className="hidden text-[12px] text-[color:var(--color-paper-dim)] md:inline">
             Kansas City
           </span>
         </Link>
@@ -23,7 +23,7 @@ export function Header() {
           <a
             href={site.loanOfficer.phoneHref}
             aria-label={`Call Josh at ${site.loanOfficer.phone}`}
-            className="flex items-center gap-2 rounded-[2px] px-2 py-3 text-ink hover:text-brick sm:px-3"
+            className="flex items-center gap-2 rounded-[2px] px-2 py-3 text-paper hover:text-[color:var(--color-paper-dim)] sm:px-3"
           >
             <PhoneIcon />
             <span className="tnum hidden text-[15px] lg:inline">

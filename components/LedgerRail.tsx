@@ -43,7 +43,7 @@ export function LedgerRail() {
   return (
     <aside
       aria-label="Page sections"
-      className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col justify-between border-r border-rule px-7 py-10 lg:flex"
+      className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col justify-between border-r border-[color:var(--color-rule-dim)] bg-ink px-7 py-10 lg:flex"
     >
       <nav>
         {/* py-2 keeps each target ≥24px tall (WCAG 2.5.8 target size). */}
@@ -56,13 +56,13 @@ export function LedgerRail() {
                   href={`#${s.id}`}
                   aria-current={isActive ? "true" : undefined}
                   className={`group flex items-center gap-3 py-2 text-[13px] transition-colors duration-[160ms] ${
-                    isActive ? "text-ink" : "text-ink-faint hover:text-ink-muted"
+                    isActive ? "text-paper" : "text-[color:var(--color-paper-dim)]/70 hover:text-[color:var(--color-paper-dim)]"
                   }`}
                 >
                   <span
                     aria-hidden="true"
                     className={`h-px transition-all duration-[160ms] ${
-                      isActive ? "w-5 bg-brick" : "w-2.5 bg-rule group-hover:w-4"
+                      isActive ? "w-5 bg-brick" : "w-2.5 bg-[color:var(--color-rule-dim)] group-hover:w-4"
                     }`}
                   />
                   {s.label}
@@ -73,10 +73,10 @@ export function LedgerRail() {
         </ul>
       </nav>
 
-      <div className="text-[12px] leading-relaxed text-ink-faint">
+      <div className="text-[12px] leading-relaxed text-[color:var(--color-paper-dim)]/70">
         <a
           href={site.loanOfficer.phoneHref}
-          className="tnum block text-[14px] text-ink hover:text-brick"
+          className="tnum block text-[14px] text-paper hover:text-[color:var(--color-paper-dim)]"
         >
           {site.loanOfficer.phone}
         </a>

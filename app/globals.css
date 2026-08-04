@@ -18,6 +18,10 @@
   --color-brass: #a67c34;
   --color-positive: #2f6b4f;
 
+  /* On-ink text for the inverted section. 11.9:1 and 6.4:1 on --color-ink. */
+  --color-paper-dim: #cfc6ba;
+  --color-rule-dim: #3a332c;
+
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans: var(--font-plex-sans), system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;

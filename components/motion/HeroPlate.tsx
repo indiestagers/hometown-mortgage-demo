@@ -62,7 +62,7 @@ export function HeroPlate() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.34] [filter:saturate(0.85)_contrast(0.92)_brightness(1.06)]"
+        className="absolute inset-0 bg-cover bg-center [filter:saturate(1.05)_contrast(1.02)]"
         style={{
           backgroundImage: `url(${BASE}/media/kansas-sunflowers-poster.jpg)`,
         }}
@@ -70,7 +70,7 @@ export function HeroPlate() {
       {showVideo && (
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover opacity-[0.34] [filter:saturate(0.85)_contrast(0.92)_brightness(1.06)]"
+          className="absolute inset-0 h-full w-full object-cover [filter:saturate(1.05)_contrast(1.02)]"
           src={`${BASE}/media/kansas-sunflowers.mp4`}
           poster={`${BASE}/media/kansas-sunflowers-poster.jpg`}
           muted
@@ -79,14 +79,17 @@ export function HeroPlate() {
           preload="none"
         />
       )}
-      {/* Paper veil: keeps text off busy pixels and guarantees contrast.
-          The direction has to change with the layout — a horizontal wipe
-          tuned for the wide two-column hero covers a 390px screen almost
-          entirely, which erased the texture on mobile. Vertical below md. */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-paper)_18%,color-mix(in_srgb,var(--color-paper)_62%,transparent)_60%,color-mix(in_srgb,var(--color-paper)_45%,transparent)_100%)] md:bg-[linear-gradient(100deg,var(--color-paper)_38%,color-mix(in_srgb,var(--color-paper)_72%,transparent)_78%,color-mix(in_srgb,var(--color-paper)_58%,transparent)_100%)]" />
-      {/* Feather the bottom edge — without this the plate ends on a hard
-          rectangle and reads as a pasted-in box rather than page texture. */}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-[linear-gradient(to_bottom,transparent,var(--color-paper))]" />
+      {/* Warm ink scrim. Two layers, both necessary:
+          1. A base wash so no frame of the video can drop text contrast below
+             AA, whatever is on screen at that moment.
+          2. A directional gradient that is heaviest where the headline sits —
+             vertical on mobile (tall, narrow), diagonal from the left on
+             desktop (wide, two-column). */}
+      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-ink)_62%,transparent)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-ink)_2%,color-mix(in_srgb,var(--color-ink)_55%,transparent)_55%,color-mix(in_srgb,var(--color-ink)_78%,transparent)_100%)] md:bg-[linear-gradient(100deg,var(--color-ink)_28%,color-mix(in_srgb,var(--color-ink)_60%,transparent)_72%,color-mix(in_srgb,var(--color-ink)_40%,transparent)_100%)]" />
+      {/* Hand the page back to paper at the bottom edge, so the dark opening
+          resolves into the light editorial body instead of stopping dead. */}
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(to_bottom,transparent,var(--color-paper))]" />
     </div>
   );
 }
