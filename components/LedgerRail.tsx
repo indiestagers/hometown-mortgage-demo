@@ -46,7 +46,7 @@ export function LedgerRail() {
       className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col justify-between border-r border-rule px-7 py-10 lg:flex"
     >
       <nav>
-        {/* py-1.5 keeps each target ≥24px tall (WCAG 2.5.8 target size). */}
+        {/* py-2 keeps each target ≥24px tall (WCAG 2.5.8 target size). */}
         <ul>
           {SECTIONS.map((s) => {
             const isActive = active === s.id;
@@ -55,7 +55,7 @@ export function LedgerRail() {
                 <a
                   href={`#${s.id}`}
                   aria-current={isActive ? "true" : undefined}
-                  className={`group flex items-center gap-2.5 py-1.5 text-[13px] transition-colors duration-[160ms] ${
+                  className={`group flex items-center gap-3 py-2 text-[13px] transition-colors duration-[160ms] ${
                     isActive ? "text-ink" : "text-ink-faint hover:text-ink-muted"
                   }`}
                 >

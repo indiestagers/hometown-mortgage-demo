@@ -2,11 +2,13 @@ import Link from "next/link";
 import { site, brokerage } from "@/site.config";
 import { ButtonLink } from "./primitives";
 
+// Padding sits OUTSIDE the max-width wrapper, exactly as Section does it —
+// otherwise the logo misaligns with every heading above 1456px.
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-rule bg-paper/90 backdrop-blur-sm">
-      <div className="flex items-center justify-between gap-4 px-6 py-4 md:px-10">
-        <Link href="/" className="flex min-w-0 items-baseline gap-2.5">
+    <header className="sticky top-0 z-40 border-b border-rule bg-paper/90 px-6 backdrop-blur-sm md:px-10">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 py-4">
+        <Link href="/" className="flex min-w-0 items-baseline gap-2">
           <span className="font-display text-[18px] leading-tight sm:text-[21px] sm:leading-none">
             The Hometown Mortgage
           </span>
@@ -21,7 +23,7 @@ export function Header() {
           <a
             href={site.loanOfficer.phoneHref}
             aria-label={`Call Josh at ${site.loanOfficer.phone}`}
-            className="flex items-center gap-2 rounded-[2px] px-2 py-2.5 text-ink hover:text-brick sm:px-3"
+            className="flex items-center gap-2 rounded-[2px] px-2 py-3 text-ink hover:text-brick sm:px-3"
           >
             <PhoneIcon />
             <span className="tnum hidden text-[15px] lg:inline">
@@ -30,7 +32,7 @@ export function Header() {
           </a>
           <ButtonLink
             href="#start"
-            className="px-4 py-2.5 text-[14px] md:px-6 md:py-3"
+            className="px-4 py-3 text-[15px] md:px-6"
           >
             Get started
           </ButtonLink>
@@ -40,9 +42,11 @@ export function Header() {
   );
 }
 
+// No top margin on <footer>: the border-t + sunk background already mark the
+// boundary. mt-32 stacked on the last section's padding produced a 289px void.
 export function Footer() {
   return (
-    <footer className="mt-32 border-t border-rule bg-paper-sunk px-6 py-14 md:px-10">
+    <footer className="border-t border-rule bg-paper-sunk px-6 py-16 md:px-10">
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
@@ -68,7 +72,7 @@ export function Footer() {
 
           <nav aria-label="Loan programs">
             <p className="eyebrow mb-3">Programs</p>
-            <ul className="space-y-1.5 text-[14px] text-ink-muted">
+            <ul className="space-y-2 text-[14px] text-ink-muted">
               {["Conventional", "FHA", "VA", "USDA"].map((p) => (
                 <li key={p}>
                   <a href="#programs" className="hover:text-ink">
@@ -81,7 +85,7 @@ export function Footer() {
 
           <nav aria-label="More">
             <p className="eyebrow mb-3">More</p>
-            <ul className="space-y-1.5 text-[14px] text-ink-muted">
+            <ul className="space-y-2 text-[14px] text-ink-muted">
               <li>
                 <a href="#estimate" className="hover:text-ink">
                   Payment estimator
@@ -193,7 +197,7 @@ function EqualHousingMark() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.2"
-      className="mt-0.5 shrink-0 text-ink-faint"
+      className="mt-1 shrink-0 text-ink-faint"
       role="img"
       aria-label="Equal Housing Lender"
     >

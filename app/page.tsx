@@ -37,7 +37,7 @@ export default function Home() {
    ──────────────────────────────────────────────────────────── */
 function Hero() {
   return (
-    <Section className="pt-20 pb-24 md:pt-24 md:pb-28">
+    <Section className="pt-16 pb-12 md:pt-20 md:pb-16">
       <div className="grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
           <Reveal immediate>
@@ -51,7 +51,7 @@ function Hero() {
           </Reveal>
 
           <Reveal immediate delay={120}>
-            <p className="measure mt-7 text-[19px] text-ink-muted">
+            <p className="measure mt-6 text-[20px] text-ink-muted">
               I&apos;m Josh Pennebaker. I&apos;ve spent my career doing home loans
               in the Kansas City metro — and I do it the way I&apos;d want it done
               for my own family. You get my direct line, not a queue.
@@ -100,7 +100,7 @@ function Hero() {
 /* ── Thesis ─────────────────────────────────────────────────── */
 function Thesis() {
   return (
-    <Section id="thesis" className="py-20 md:py-28">
+    <Section id="thesis" className="py-12 md:py-16">
       <div className="grid gap-14 lg:grid-cols-[1fr_320px] lg:gap-20">
         <div>
           <Reveal>
@@ -112,7 +112,7 @@ function Thesis() {
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <div className="measure mt-7 space-y-5 text-ink-muted">
+            <div className="measure mt-6 space-y-5 text-ink-muted">
               <p>
                 Buying a house is the largest transaction most people ever make,
                 and it moves fast. When your agent needs an approval letter on a
@@ -185,7 +185,7 @@ function Thesis() {
 /* ── Programs ───────────────────────────────────────────────── */
 function Programs() {
   return (
-    <Section id="programs" className="py-20 md:py-28">
+    <Section id="programs" className="py-12 md:py-16">
       <Reveal>
         <Eyebrow>Loan programs</Eyebrow>
       </Reveal>
@@ -202,7 +202,7 @@ function Programs() {
         </p>
       </Reveal>
 
-      <div className="mt-14 border-t border-rule">
+      <div className="mt-12 border-t border-rule">
         {programs.map((p, i) => (
           <Reveal key={p.slug} delay={i * 60}>
             <article className="grid gap-6 border-b border-rule py-9 md:grid-cols-[auto_1fr_1fr] md:gap-12">
@@ -221,7 +221,7 @@ function Programs() {
                 </p>
               </div>
 
-              <ul className="space-y-2.5">
+              <ul className="space-y-3">
                 {p.points.map((pt) => (
                   <li key={pt} className="flex gap-3 text-[14px] text-ink-muted">
                     <span
@@ -243,7 +243,7 @@ function Programs() {
 /* ── Estimator ──────────────────────────────────────────────── */
 function Estimate() {
   return (
-    <Section id="estimate" className="py-20 md:py-28">
+    <Section id="estimate" className="py-12 md:py-16">
       <Reveal>
         <Eyebrow>Payment estimator</Eyebrow>
       </Reveal>
@@ -294,7 +294,7 @@ const STEPS = [
 
 function Process() {
   return (
-    <Section id="process" className="py-20 md:py-28">
+    <Section id="process" className="py-12 md:py-16">
       <Reveal>
         <Eyebrow>How it works</Eyebrow>
       </Reveal>
@@ -305,14 +305,14 @@ function Process() {
       </Reveal>
 
       {/* <li> must be a direct child of <ol> — the Reveal wrapper goes inside. */}
-      <ol className="mt-14 grid gap-px border border-rule bg-rule md:grid-cols-2 lg:grid-cols-4">
+      <ol className="mt-12 grid gap-px border border-rule bg-rule md:grid-cols-2 lg:grid-cols-4">
         {STEPS.map((s, i) => (
           <li key={s.n} className="h-full bg-paper">
             <Reveal delay={i * 60} className="h-full">
               <div className="h-full p-7">
                 <span className="tnum text-[13px] text-brick">{s.n}</span>
                 <h3 className="mt-3 text-[21px]">{s.t}</h3>
-                <p className="mt-2.5 text-[14px] leading-relaxed text-ink-muted">
+                <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
                   {s.d}
                 </p>
               </div>
@@ -327,7 +327,7 @@ function Process() {
 /* ── Reviews ────────────────────────────────────────────────── */
 function Reviews() {
   return (
-    <Section id="reviews" className="py-20 md:py-28">
+    <Section id="reviews" className="py-12 md:py-16">
       <Reveal>
         <Eyebrow>In their words</Eyebrow>
       </Reveal>
@@ -338,7 +338,7 @@ function Reviews() {
       </Reveal>
 
       {/* Deliberately uneven column split — editorial, not a 3-up card grid. */}
-      <div className="mt-14 grid gap-x-14 gap-y-12 md:grid-cols-2">
+      <div className="mt-12 grid gap-x-14 gap-y-12 md:grid-cols-2">
         {testimonials.map((t, i) => (
           <Reveal key={t.name} delay={i * 60}>
             <figure className={i % 2 === 1 ? "md:pt-12" : ""}>
@@ -372,7 +372,7 @@ function Reviews() {
 /* ── Service area ───────────────────────────────────────────── */
 function Area() {
   return (
-    <Section id="area" className="py-20 md:py-28">
+    <Section id="area" className="py-12 md:py-16">
       <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         <div>
           <Reveal>
@@ -416,7 +416,7 @@ function Area() {
 /* ── Start ──────────────────────────────────────────────────── */
 function Start() {
   return (
-    <Section id="start" className="py-20 md:py-28">
+    <Section id="start" className="py-12 md:py-16">
       <div className="grid gap-14 lg:grid-cols-[1fr_480px] lg:gap-20">
         <div>
           <Reveal>

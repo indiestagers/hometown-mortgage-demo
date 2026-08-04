@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 /* Buttons — 2px radius, no gradients, borders over shadows. */
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-[2px] px-6 py-3.5 text-[15px] font-medium transition-colors duration-[160ms] ease-[cubic-bezier(0.2,0,0,1)]";
+  "inline-flex items-center justify-center gap-2 rounded-[2px] px-6 py-3 text-[15px] font-medium transition-colors duration-[160ms] ease-[cubic-bezier(0.2,0,0,1)]";
 
 export function ButtonLink({
   variant = "primary",
@@ -63,9 +63,11 @@ export function Section({
   bleed?: boolean;
 }) {
   return (
+    /* No scroll-mt here: `scroll-padding-top` on <html> already offsets the
+       sticky header. Both applying made anchor jumps land 192px down. */
     <section
       id={id}
-      className={`scroll-mt-24 ${bleed ? "" : "px-6 md:px-10"} ${className}`}
+      className={`${bleed ? "" : "px-6 md:px-10"} ${className}`}
     >
       {bleed ? children : <div className="mx-auto max-w-6xl">{children}</div>}
     </section>

@@ -176,7 +176,7 @@ export function Estimator() {
           {rows.map((r) => (
             <div
               key={r.label}
-              className="flex items-baseline justify-between border-b border-rule py-2.5"
+              className="flex items-baseline justify-between border-b border-rule py-3"
             >
               <dt className="text-[14px] text-ink-muted">{r.label}</dt>
               <dd className="tnum text-[14px] text-ink">
@@ -247,10 +247,10 @@ function Slider({
         aria-valuetext={display}
         aria-describedby={note ? `${id}-note` : undefined}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-2.5 h-1 w-full cursor-pointer appearance-none rounded-full bg-rule accent-brick"
+        className="mt-3 h-1 w-full cursor-pointer appearance-none rounded-full bg-rule accent-brick"
       />
       {note && (
-        <p id={`${id}-note`} className="mt-1.5 text-[12px] text-ink-faint">
+        <p id={`${id}-note`} className="mt-2 text-[12px] text-ink-faint">
           {note}
         </p>
       )}

@@ -98,7 +98,7 @@ export function StartForm() {
         <span className="tnum text-[12px] text-ink-faint">
           {stepIndex}/3
         </span>
-        <div className="flex flex-1 gap-1.5" aria-hidden="true">
+        <div className="flex flex-1 gap-2" aria-hidden="true">
           {[1, 2, 3].map((i) => (
             <span
               key={i}
@@ -263,7 +263,7 @@ function Field({
         required={required}
         autoComplete={autoComplete}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1.5 w-full rounded-[2px] border border-rule bg-paper px-4 py-3 text-[15px] text-ink outline-none transition-colors duration-[160ms] focus:border-ink"
+        className="mt-2 w-full rounded-[2px] border border-rule bg-paper px-4 py-3 text-[15px] text-ink outline-none transition-colors duration-[160ms] focus:border-ink"
       />
     </div>
   );
