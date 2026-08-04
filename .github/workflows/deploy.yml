@@ -28,6 +28,10 @@ jobs:
 
       - run: npm ci
 
+      # Next 16 generates route/layout types (LayoutProps, PageProps) into
+      # .next/types. tsc cannot resolve them until this has run.
+      - run: npx next typegen
+
       # Fail the build on type or lint errors rather than shipping them.
       - run: npx tsc --noEmit
       - run: npm run lint
