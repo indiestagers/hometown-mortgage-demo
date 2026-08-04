@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { ScrollReset } from "@/components/ScrollReset";
 import { site, brokerage } from "@/site.config";
 import "./globals.css";
 
@@ -97,6 +98,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
+        <ScrollReset />
         {children}
         <StructuredData />
       </body>

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
  * Sunflower plate behind the hero type. Kansas is the Sunflower State — this is
  * regional, not generic stock, which is the whole point.
  *
- * Treated hard on purpose: grayscale, lifted, ~26% opacity, with a paper veil
+ * Treated on purpose: lightly desaturated, lifted, ~34% opacity, with a paper veil
  * over it. It should read as texture on the page, never as a photograph, and
  * never compete with the headline.
  *
@@ -62,7 +62,7 @@ export function HeroPlate() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.26] [filter:grayscale(0.9)_contrast(0.85)_brightness(1.12)]"
+        className="absolute inset-0 bg-cover bg-center opacity-[0.34] [filter:saturate(0.85)_contrast(0.92)_brightness(1.06)]"
         style={{
           backgroundImage: `url(${BASE}/media/kansas-sunflowers-poster.jpg)`,
         }}
@@ -70,7 +70,7 @@ export function HeroPlate() {
       {showVideo && (
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover opacity-[0.26] [filter:grayscale(0.9)_contrast(0.85)_brightness(1.12)]"
+          className="absolute inset-0 h-full w-full object-cover opacity-[0.34] [filter:saturate(0.85)_contrast(0.92)_brightness(1.06)]"
           src={`${BASE}/media/kansas-sunflowers.mp4`}
           poster={`${BASE}/media/kansas-sunflowers-poster.jpg`}
           muted
