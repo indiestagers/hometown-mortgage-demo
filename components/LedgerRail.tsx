@@ -43,8 +43,21 @@ export function LedgerRail() {
   return (
     <aside
       aria-label="Page sections"
-      className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col justify-between border-r border-rule px-7 py-10 lg:flex"
+      className="relative sticky top-0 hidden h-screen w-56 shrink-0 flex-col justify-between border-r border-rule px-7 py-10 lg:flex"
     >
+      {/* Read-position indicator: turns the rail from a static index into a
+          spine that tracks where you are. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 left-0 w-px bg-rule"
+      >
+        <div
+          data-scroll-progress
+          className="h-full w-px origin-top bg-brick"
+          style={{ transform: "scaleY(0)" }}
+        />
+      </div>
+
       <nav>
         {/* py-2 keeps each target ≥24px tall (WCAG 2.5.8 target size). */}
         <ul>

@@ -62,6 +62,10 @@ export function HeroPlate() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div
+        data-hero-plate
+        className="absolute inset-0 scale-[1.15] will-change-transform"
+      >
+      <div
         className="absolute inset-0 bg-cover bg-center [filter:saturate(1.05)_contrast(1.02)]"
         style={{
           backgroundImage: `url(${BASE}/media/kansas-sunflowers-poster.jpg)`,
@@ -79,6 +83,7 @@ export function HeroPlate() {
           preload="none"
         />
       )}
+      </div>
       {/* Warm ink scrim. Two layers, both necessary:
           1. A base wash so no frame of the video can drop text contrast below
              AA, whatever is on screen at that moment.

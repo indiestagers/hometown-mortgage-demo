@@ -8,6 +8,7 @@ import { Estimator } from "@/components/Estimator";
 import { StartForm } from "@/components/StartForm";
 import { Reveal } from "@/components/Reveal";
 import { EstimateProvider } from "@/components/EstimateContext";
+import { ScrollFX } from "@/components/motion/ScrollFX";
 import { LineReveal } from "@/components/motion/LineReveal";
 import { PinnedProcess } from "@/components/motion/PinnedProcess";
 import { HeroPlate } from "@/components/motion/HeroPlate";
@@ -24,6 +25,7 @@ export default function Home() {
   return (
     <EstimateProvider>
     <div className="flex">
+      <ScrollFX />
       <LedgerRail />
 
       <div className="min-w-0 flex-1">
@@ -54,7 +56,7 @@ export default function Home() {
    ──────────────────────────────────────────────────────────── */
 function Hero() {
   return (
-    <Section className="relative bg-ink pt-20 pb-28 md:pt-28 md:pb-36">
+    <Section id="hero-section" className="relative bg-ink pt-20 pb-28 md:pt-28 md:pb-36">
       <HeroPlate />
       <div className="relative grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
@@ -229,7 +231,10 @@ function Programs() {
       <div className="mt-12 border-t border-rule">
         {programs.map((p, i) => (
           <Reveal key={p.slug} delay={i * 60}>
-            <article className="grid gap-6 border-b border-rule py-9 md:grid-cols-[auto_1fr_1fr] md:gap-12">
+            <article
+              data-program-row
+              className="grid gap-6 border-b border-rule py-9 will-change-transform md:grid-cols-[auto_1fr_1fr] md:gap-12"
+            >
               <div className="md:w-32">
                 <h3 className="text-[30px] leading-none">{p.name}</h3>
                 <p className="mt-3 text-[13px] text-ink-faint">
