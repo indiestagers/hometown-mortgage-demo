@@ -12,6 +12,7 @@ import { ScrollFX } from "@/components/motion/ScrollFX";
 import { LineReveal } from "@/components/motion/LineReveal";
 import { PinnedProcess } from "@/components/motion/PinnedProcess";
 import { HeroPlate } from "@/components/motion/HeroPlate";
+import { HeroBuild } from "@/components/motion/HeroBuild";
 import { ButtonLink, Eyebrow, Section } from "@/components/primitives";
 
 /**
@@ -20,6 +21,10 @@ import { ButtonLink, Eyebrow, Section } from "@/components/primitives";
  * hero video 404 on Pages. public/ assets must be prefixed by hand.
  */
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+/** Hero treatment. "build" = scroll-scrubbed blueprint->home; "plate" = the
+ *  sunflower loop. Flip to compare; delete the loser once decided. */
+const HERO: "build" | "plate" = "build";
 
 export default function Home() {
   return (
@@ -60,7 +65,7 @@ function Hero() {
       id="hero-section"
       className="relative flex min-h-[88svh] flex-col justify-center bg-ink pt-20 pb-28 md:pt-28 md:pb-36"
     >
-      <HeroPlate />
+      {HERO === "build" ? <HeroBuild /> : <HeroPlate />}
       <div className="relative grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
           <Reveal immediate>
