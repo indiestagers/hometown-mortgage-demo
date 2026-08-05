@@ -77,7 +77,7 @@ export function HeroBuild() {
   useEffect(() => {
     if (!mounted) return;
     const video = videoRef.current;
-    const hero = document.getElementById("hero-section");
+    const hero = document.getElementById("hero-track");
     if (!video || !hero) return;
 
     let frame = 0;
@@ -108,12 +108,13 @@ export function HeroBuild() {
     const apply = () => {
       if (!duration) return;
       const r = hero.getBoundingClientRect();
-      if (r.height <= 0) return;
-      // Progress = how far you have scrolled THROUGH the hero: 0 at the top of
-      // the page, 1 once the hero has fully scrolled past. Measuring entry into
-      // the viewport instead would start at ~48% on load, so the blueprint
-      // stage — the whole point — would never be seen.
-      const p = Math.min(1, Math.max(0, -r.top / r.height));
+      // The track is taller than the viewport; the hero pins inside it. The pin
+      // only lasts (trackHeight - viewportHeight), so progress must map to THAT
+      // — mapping to the full track height would leave the transformation about
+      // half done at the moment the pin releases.
+      const pinnable = r.height - window.innerHeight;
+      if (pinnable <= 0) return;
+      const p = Math.min(1, Math.max(0, -r.top / pinnable));
       target = p * (duration - 0.05);
       if (!frame) frame = requestAnimationFrame(tick);
     };
@@ -146,14 +147,18 @@ export function HeroBuild() {
       className="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
+      {/* The clip is 21:9 but the hero is nearly square at 100svh, so filling
+          the whole box would crop hard into the centre and show a zoomed
+          detail instead of the house. Anchor it as a band across the lower
+          hero and leave clean ink up top, where the headline sits. */}
       <div
-        className="absolute inset-0 scale-[1.04] bg-cover bg-[position:50%_62%]"
+        className="absolute inset-x-0 bottom-0 h-[74%] bg-cover bg-bottom md:h-[78%]"
         style={{ backgroundImage: `url(${poster})` }}
       />
       {mounted && !reduced && (
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full scale-[1.04] object-cover object-[50%_62%]"
+          className="absolute inset-x-0 bottom-0 h-[74%] w-full object-cover object-bottom md:h-[78%]"
           src={`${BASE}/media/house-build.mp4`}
           poster={poster}
           muted

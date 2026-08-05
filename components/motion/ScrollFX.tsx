@@ -46,7 +46,7 @@ export function ScrollFX() {
       //    used its default ["start end","end start"], which is why the range
       //    is symmetric rather than 0 -> n.
       const plate = document.querySelector<HTMLElement>("[data-hero-plate]");
-      const heroSection = document.getElementById("hero-section");
+      const heroSection = document.getElementById("hero-track");
       if (plate && heroSection) {
         stops.push(
           scroll(

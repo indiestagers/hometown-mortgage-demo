@@ -61,9 +61,10 @@ export default function Home() {
    ──────────────────────────────────────────────────────────── */
 function Hero() {
   return (
+    <div id="hero-track" className="hero-track relative bg-ink">
     <Section
       id="hero-section"
-      className="relative flex min-h-[88svh] flex-col justify-center bg-ink pt-20 pb-28 md:pt-28 md:pb-36"
+      className="sticky top-0 flex min-h-[100svh] flex-col justify-center overflow-hidden bg-ink pt-24 pb-20 md:pt-28 md:pb-24"
     >
       {HERO === "build" ? <HeroBuild /> : <HeroPlate />}
       <div className="relative grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
@@ -132,6 +133,7 @@ function Hero() {
         </Reveal>
       </div>
     </Section>
+    </div>
   );
 }
 

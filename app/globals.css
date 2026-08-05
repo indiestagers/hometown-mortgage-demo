@@ -119,6 +119,31 @@
   }
 }
 
+/* Hero scroll track. The hero pins while the blueprint resolves into the
+   finished house, then releases — otherwise the section scrolls away with the
+   transformation only half done.
+
+   Under reduced motion the video never mounts, so pinning would just hold a
+   static image for two screens. Collapse the track to its natural height. */
+@layer utilities {
+  .hero-track {
+    height: 215svh;
+  }
+  @media (max-width: 767px) {
+    .hero-track {
+      height: 185svh;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-track {
+      height: auto;
+    }
+    .hero-track > section {
+      position: static;
+    }
+  }
+}
+
 /* Masked line wipe for display headings. CSS-only by design — see LineReveal. */
 @layer utilities {
   .line-reveal__line {
