@@ -1,6 +1,16 @@
 /**
- * Hero verification: contrast over the moving image, and the scrub itself,
- * on desktop AND mobile.
+ * Hero verification: contrast over the moving image, and the scrub itself.
+ *
+ * ⚠️  SCOPE LIMIT, LEARNED THE HARD WAY.
+ * Playwright's "iPhone 13" profile is Chromium with a phone-sized viewport and
+ * a spoofed user agent. It does NOT reproduce iOS Safari's media policy. An
+ * earlier version of the hero scrubbed a <video> via currentTime; that passed
+ * every check here and did nothing at all on a real iPhone, because iOS will
+ * not decode or seek a video that has never been played by a user gesture.
+ *
+ * The hero now uses a preloaded frame sequence, which has no media-policy
+ * behaviour to diverge on. These checks therefore mean what they say again —
+ * but treat "mobile" below as "narrow viewport", never as "verified on iOS".
  *
  * The contrast half is deliberately awkward. Lighthouse cannot judge text over
  * video — it has no computed background to compare against — so this samples
@@ -122,14 +132,15 @@ async function contrastAt(page, scrollY, label) {
   const pin = await p.evaluate(async () => {
     const track = document.getElementById("hero-track");
     const hero = document.getElementById("hero-section");
-    const v = document.querySelector("video");
     const th = track.getBoundingClientRect().height;
     const pinnable = th - innerHeight;
     window.scrollTo(0, pinnable - 20);
     await new Promise((r) => setTimeout(r, 1400));
+    const frames = [...document.querySelectorAll("[data-frame]")];
+    const on = frames.findIndex((el) => getComputedStyle(el).opacity === "1");
     return {
       pinned: Math.abs(hero.getBoundingClientRect().top) < 4,
-      progress: v ? v.currentTime / v.duration : null,
+      progress: frames.length ? on / (frames.length - 1) : null,
     };
   });
   check("desktop: hero still pinned at end of track", pin.pinned, `heroTop~0=${pin.pinned}`);
@@ -159,19 +170,22 @@ async function contrastAt(page, scrollY, label) {
   check("mobile: hero is NOT pinned", layout.position === "static", layout.position);
   check("mobile: hero CTA is inside the hero (not cut off)", layout.ctaVisible);
 
+  check("mobile: no <video> (iOS cannot scrub one)", await p.evaluate(() => !document.querySelector("video")));
+
   const seen = [];
   for (const y of [0, 300, 600, 900, 1200]) {
     await p.evaluate((yy) => window.scrollTo(0, yy), y);
-    await p.waitForTimeout(600);
+    await p.waitForTimeout(500);
     seen.push(await p.evaluate(() => {
-      const v = document.querySelector("video");
-      return v ? +(v.currentTime / v.duration).toFixed(2) : null;
+      const on = [...document.querySelectorAll("[data-frame]")].findIndex(
+        (el) => getComputedStyle(el).opacity === "1",
+      );
+      return on;
     }));
   }
-  const advanced = seen.filter((v) => v !== null);
-  const monotonic = advanced.every((v, i) => i === 0 || v >= advanced[i - 1] - 0.01);
-  check("mobile: scrub advances with scroll", advanced.length > 0 && advanced.at(-1) > 0.8, JSON.stringify(advanced));
-  check("mobile: scrub never runs backwards", monotonic, JSON.stringify(advanced));
+  const monotonic = seen.every((v, i) => i === 0 || v >= seen[i - 1]);
+  check("mobile: frame advances with scroll", seen.at(-1) > seen[0] && seen.at(-1) >= 20, JSON.stringify(seen));
+  check("mobile: frame never runs backwards", monotonic, JSON.stringify(seen));
 
   await contrastAt(p, 0, "mobile@top");
   await contrastAt(p, 140, "mobile@mid");

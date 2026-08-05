@@ -6,35 +6,35 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
  * Scroll-scrubbed hero: a house resolves from an architect's blueprint into a
  * finished, lit home as you scroll.
  *
- * WHY THIS AND NOT A LOOPING PLATE
- * A background loop has no beginning or end, so it reads as decoration and the
- * eye discards it. This has an arc — drawing -> materialised -> warm windows —
- * and the arc is bound to scroll position, so the visitor drives it. That is
- * the difference between motion that means something and motion that just
- * moves.
+ * WHY A FRAME SEQUENCE AND NOT A VIDEO
+ * This was a <video> with currentTime driven by scroll. It worked in Chrome and
+ * in Playwright, and did nothing at all on a real iPhone. iOS Safari will not
+ * decode or seek a video that has never been played by a user gesture, so the
+ * seeks were silently ignored and the hero just sat there.
  *
- * It also says the right thing for a mortgage, which construction footage does
- * not: Josh writes purchase and refinance loans, not construction loans. A
- * framing-to-roof time-lapse is the builder's story. Plan -> home is the
- * buyer's, and it is what a mortgage actually does.
+ * Playwright's "iPhone 13" device profile is Chromium with a phone-sized
+ * viewport and a spoofed user agent — it does NOT reproduce iOS media policy,
+ * so it reported the scrub working when it was not. Rather than special-case
+ * iOS, this uses 24 preloaded JPEGs and swaps which one is visible. There is no
+ * media-policy behaviour left to get wrong, and it is identical on every
+ * browser.
  *
- * WHY IT DOES NOT STUTTER
- * The clip is re-encoded all-intra (-g 1, 12fps) so every seek lands on a
- * keyframe and decodes immediately. A normally-encoded video has to decode
- * forward from the previous keyframe on each seek, which is what makes naive
- * scroll-scrubbing judder — badly on Safari/macOS.
+ * Cost: 24 frames x ~30KB = ~1MB, versus 1.5MB for the video. All frames are
+ * fetched after load + idle, so nothing competes with first paint.
  *
- * LCP DISCIPLINE
- * The poster is a 51KB JPEG painted as a background immediately. The 1.5MB
- * video element only mounts after load + idle, so it never competes with the
- * hero text for first paint. Skipped on save-data and slow connections.
+ * WHY IT IS SMOOTH
+ * Every frame is decoded once up front and then only its opacity changes, so
+ * scrolling never triggers a decode. 24 steps is enough because this is a slow
+ * dissolve, not fast motion.
  *
- * REDUCED MOTION
- * Shows the FINISHED house — the end state is the meaningful image; a
- * blueprint alone would read as an unfinished page.
+ * REDUCED MOTION / SAVE-DATA
+ * Renders the FINISHED house as a single static image and loads nothing else.
  */
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const FRAME_COUNT = 24;
+const frameSrc = (i: number) =>
+  `${BASE}/media/build/f${String(i + 1).padStart(2, "0")}.jpg`;
 
 const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
 const subscribeReducedMotion = (cb: () => void) => {
@@ -45,140 +45,135 @@ const subscribeReducedMotion = (cb: () => void) => {
 const getReduced = () => window.matchMedia(REDUCED_QUERY).matches;
 
 export function HeroBuild() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [mounted, setMounted] = useState(false);
-  const reduced = useSyncExternalStore(subscribeReducedMotion, getReduced, () => false);
+  const layerRef = useRef<HTMLDivElement>(null);
+  const [loaded, setLoaded] = useState(false);
+  const reduced = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReduced,
+    () => false,
+  );
 
+  // Fetch and decode every frame after the page has settled.
   useEffect(() => {
     if (reduced) return;
     const conn = (
-      navigator as Navigator & {
-        connection?: { saveData?: boolean; effectiveType?: string };
-      }
+      navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }
     ).connection;
     if (conn?.saveData) return;
     if (conn?.effectiveType && /(^|\W)(2g|slow-2g)/.test(conn.effectiveType)) return;
 
+    let cancelled = false;
     let idle: number;
+
     const start = () => {
       const ric =
         window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 300));
-      idle = ric(() => setMounted(true)) as unknown as number;
+      idle = ric(async () => {
+        await Promise.all(
+          Array.from({ length: FRAME_COUNT }, (_, i) => {
+            const img = new Image();
+            img.src = frameSrc(i);
+            return img.decode?.().catch(() => {}) ?? Promise.resolve();
+          }),
+        );
+        if (!cancelled) setLoaded(true);
+      }) as unknown as number;
     };
+
     if (document.readyState === "complete") start();
     else window.addEventListener("load", start, { once: true });
 
     return () => {
+      cancelled = true;
       window.removeEventListener("load", start);
       if (idle) (window.cancelIdleCallback ?? clearTimeout)(idle);
     };
   }, [reduced]);
 
+  // Map scroll position to the visible frame.
   useEffect(() => {
-    if (!mounted) return;
-    const video = videoRef.current;
-    const hero = document.getElementById("hero-track");
-    if (!video || !hero) return;
+    if (!loaded) return;
+    const layer = layerRef.current;
+    const track = document.getElementById("hero-track");
+    if (!layer || !track) return;
 
-    let frame = 0;
-    let duration = 0;
-    let target = 0;
-
-    const onMeta = () => {
-      duration = video.duration || 0;
-      apply();
-    };
-
-    // Ease the seek toward the target instead of snapping to it. Scroll events
-    // are coarse; interpolating gives the transformation a sense of weight and
-    // hides any single dropped frame.
-    const tick = () => {
-      frame = 0;
-      if (!duration) return;
-      const current = video.currentTime;
-      const next = current + (target - current) * 0.18;
-      if (Math.abs(target - current) > 0.008) {
-        video.currentTime = next;
-        frame = requestAnimationFrame(tick);
-      } else {
-        video.currentTime = target;
-      }
-    };
+    const frames = Array.from(
+      layer.querySelectorAll<HTMLElement>("[data-frame]"),
+    );
+    let raf = 0;
+    let shown = -1;
 
     const apply = () => {
-      if (!duration) return;
-      const r = hero.getBoundingClientRect();
-      // The track is taller than the viewport; the hero pins inside it. The pin
-      // only lasts (trackHeight - viewportHeight), so progress must map to THAT
-      // — mapping to the full track height would leave the transformation about
-      // half done at the moment the pin releases.
+      raf = 0;
+      const r = track.getBoundingClientRect();
       // Desktop pins the hero, so progress maps to the pinned distance
       // (track - viewport). Mobile does not pin — the hero is taller than the
-      // viewport there, and pinning would cut off the buttons and the ledger —
-      // so progress maps to scrolling through the hero itself.
+      // viewport there — so progress maps to scrolling through it.
       const pinnable = r.height - window.innerHeight;
       const span = pinnable > 80 ? pinnable : r.height;
       if (span <= 0) return;
       const p = Math.min(1, Math.max(0, -r.top / span));
-      target = p * (duration - 0.05);
-      if (!frame) frame = requestAnimationFrame(tick);
+      const idx = Math.min(FRAME_COUNT - 1, Math.round(p * (FRAME_COUNT - 1)));
+      if (idx === shown) return;
+      if (shown >= 0) frames[shown].style.opacity = "0";
+      frames[idx].style.opacity = "1";
+      shown = idx;
     };
 
     const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(tick);
-      apply();
+      if (!raf) raf = requestAnimationFrame(apply);
     };
 
-    video.addEventListener("loadedmetadata", onMeta);
-    if (video.readyState >= 1) onMeta();
-
+    apply();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
-
     return () => {
-      video.removeEventListener("loadedmetadata", onMeta);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      if (frame) cancelAnimationFrame(frame);
+      if (raf) cancelAnimationFrame(raf);
     };
-  }, [mounted]);
+  }, [loaded]);
 
-  const poster = reduced
-    ? `${BASE}/media/house-build-end.jpg`
-    : `${BASE}/media/house-build-start.jpg`;
+  const plate =
+    "absolute inset-x-0 bottom-0 h-[42%] w-full object-cover object-bottom [filter:brightness(1.7)_contrast(1.12)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] md:h-[78%]";
 
   return (
     <div
       className="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
-      {/* The clip is 21:9 but the hero is nearly square at 100svh, so filling
-          the whole box would crop hard into the centre and show a zoomed
-          detail instead of the house. Anchor it as a band across the lower
-          hero and leave clean ink up top, where the headline sits. */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-[42%] bg-cover bg-bottom [filter:brightness(1.7)_contrast(1.12)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] md:h-[78%]"
-        style={{ backgroundImage: `url(${poster})` }}
+      {/* Static base. Under reduced motion this is the finished house and is
+          all that ever renders; otherwise it is frame 1 and the sequence
+          fades in over it. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={reduced ? `${BASE}/media/house-build-end.jpg` : frameSrc(0)}
+        alt=""
+        className={plate}
+        fetchPriority="low"
+        decoding="async"
       />
-      {mounted && !reduced && (
-        <video
-          ref={videoRef}
-          className="absolute inset-x-0 bottom-0 h-[42%] w-full object-cover object-bottom [filter:brightness(1.7)_contrast(1.12)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] md:h-[78%]"
-          src={`${BASE}/media/house-build.mp4`}
-          poster={poster}
-          muted
-          playsInline
-          preload="auto"
-        />
+
+      {!reduced && loaded && (
+        <div ref={layerRef}>
+          {Array.from({ length: FRAME_COUNT }, (_, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={i}
+              data-frame={i}
+              src={frameSrc(i)}
+              alt=""
+              className={plate}
+              style={{ opacity: i === 0 ? 1 : 0 }}
+              decoding="async"
+            />
+          ))}
+        </div>
       )}
 
-      {/* Warm ink scrim, same two-layer construction as before: a flat wash so
-          no frame can drop text contrast below AA, plus a directional gradient
-          heaviest where the headline sits. */}
-      {/* EVEN scrim across the whole plate. A directional gradient protected
-          the headline by blacking out the left third, which killed the picture
-          exactly where the drawing is most legible. The text carries its own
-          legibility instead (see .hero-type in globals.css). */}
+      {/* Even scrim. A directional gradient protected the headline by blacking
+          out the left third, which killed the drawing exactly where it is most
+          legible. The type carries its own legibility via .hero-type. */}
       <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-ink)_64%,transparent)]" />
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--color-ink)_86%,transparent)_0%,color-mix(in_srgb,var(--color-ink)_34%,transparent)_34%,color-mix(in_srgb,var(--color-ink)_34%,transparent)_72%,color-mix(in_srgb,var(--color-ink)_62%,transparent)_100%)]" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,var(--color-paper))]" />

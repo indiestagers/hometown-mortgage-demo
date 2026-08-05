@@ -10,8 +10,9 @@
     "verify:motion": "node scripts/verify-motion.mjs",
     "verify:blank": "node scripts/verify-no-blank.mjs",
     "verify:e2e": "node scripts/verify-e2e.mjs",
-    "verify": "npm run verify:motion && npm run verify:blank && npm run verify:hero && npm run verify:e2e",
-    "verify:hero": "node scripts/verify-hero.mjs"
+    "verify": "npm run verify:motion && npm run verify:blank && npm run verify:hero && npm run verify:plate && npm run verify:e2e",
+    "verify:hero": "node scripts/verify-hero.mjs",
+    "verify:plate": "node scripts/verify-plate-moves.mjs"
   },
   "dependencies": {
     "motion": "^12.43.0",
