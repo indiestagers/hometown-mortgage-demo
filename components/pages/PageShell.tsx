@@ -68,8 +68,8 @@ export function PageHeader({
       <div className="grid gap-x-16 gap-y-10 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
           <Eyebrow>{eyebrow}</Eyebrow>
-          <h1 className="mt-6 text-[clamp(2.25rem,5vw,3.5rem)]">{title}</h1>
-          <div className="measure mt-7 space-y-5 text-[19px] text-ink-muted">
+          <h1 className="mt-6 text-[clamp(2.5rem,5vw,3.5rem)]">{title}</h1>
+          <div className="measure mt-7 space-y-5 text-[20px] text-ink-muted">
             {paragraphs.map((p) => (
               <p key={p}>{p}</p>
             ))}
@@ -94,7 +94,7 @@ export function SectionHead({
   return (
     <div>
       <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 className="mt-6 max-w-[22ch] text-[clamp(1.75rem,4vw,2.75rem)]">
+      <h2 className="mt-6 max-w-[22ch] text-[clamp(1.875rem,4vw,2.75rem)]">
         {title}
       </h2>
       {intro && <p className="measure mt-6 text-ink-muted">{intro}</p>}
@@ -108,7 +108,7 @@ export function SectionHead({
  */
 export function Caveat({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded-[2px] border border-rule px-4 py-3 text-[12px] leading-relaxed text-ink-faint">
+    <p className="rounded-[2px] border border-rule px-4 py-3 text-[13px] leading-relaxed text-ink-faint">
       {children}
     </p>
   );

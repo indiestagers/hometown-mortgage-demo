@@ -208,10 +208,10 @@ export function PurchaseCalculator() {
               />
             </dl>
 
-            <p className="mt-5 text-[12px] leading-relaxed text-ink-faint">
+            <p className="mt-5 text-[13px] leading-relaxed text-ink-faint">
               {ESTIMATE_DISCLAIMER}
             </p>
-            <p className="mt-3 text-[12px] leading-relaxed text-ink-faint">
+            <p className="mt-3 text-[13px] leading-relaxed text-ink-faint">
               Closing costs are not included above. Neither is FHA&apos;s upfront
               premium or USDA&apos;s upfront guarantee fee — both are normally
               financed into the balance, which raises the payment somewhat.

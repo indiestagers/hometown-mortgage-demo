@@ -3,6 +3,8 @@
 import { useId, useState } from "react";
 import { Button } from "./primitives";
 import { site } from "@/site.config";
+import { useEstimate } from "./EstimateContext";
+import { usd } from "@/lib/mortgage";
 
 type Stage = "goal" | "timing" | "contact" | "done";
 
@@ -29,6 +31,7 @@ const TIMING = [
  */
 export function StartForm() {
   const uid = useId();
+  const { estimate } = useEstimate();
   const [stage, setStage] = useState<Stage>("goal");
   const [goal, setGoal] = useState<string | null>(null);
   const [timing, setTiming] = useState<string | null>(null);
@@ -51,7 +54,7 @@ export function StartForm() {
     setSubmitting(true);
     try {
       // DEMO ONLY — replace with a real submission endpoint.
-      const payload = { goal, timing, name, email, phone };
+      const payload = { goal, timing, name, email, phone, estimate };
       console.info("[demo] lead captured (not transmitted):", payload);
       await new Promise((r) => setTimeout(r, 600));
       setStage("done");
@@ -75,7 +78,14 @@ export function StartForm() {
           Josh will call you personally — usually same day, always within one
           business day. Not a call center, not an automated drip.
         </p>
-        <p className="mt-6 text-[14px] text-ink-faint">
+        {estimate && (
+          <p className="mt-4 text-[15px] text-ink-muted">
+            He&apos;ll have your{" "}
+            <span className="tnum">{usd(estimate.monthlyTotal)}/mo</span>{" "}
+            {estimate.programLabel} estimate in front of him when he calls.
+          </p>
+        )}
+        <p className="mt-6 text-[15px] text-ink-faint">
           Need him sooner?{" "}
           <a
             href={site.loanOfficer.phoneHref}
@@ -84,7 +94,7 @@ export function StartForm() {
             {site.loanOfficer.phone}
           </a>
         </p>
-        <p className="mt-8 rounded-[2px] border border-brass/40 bg-paper-sunk px-4 py-3 text-[12px] text-ink-faint">
+        <p className="mt-8 rounded-[2px] border border-brass/40 bg-paper-sunk px-4 py-3 text-[13px] text-ink-faint">
           Demo note: this form is not yet connected to a CRM. Wire it up before
           launch.
         </p>
@@ -94,8 +104,29 @@ export function StartForm() {
 
   return (
     <div className="rounded-[2px] border border-rule bg-paper p-7 md:p-9">
+      {estimate && (
+        <div className="mb-7 border-b border-rule pb-5">
+          <p className="eyebrow mb-2">Your estimate</p>
+          <p className="tnum text-[20px] leading-snug text-ink">
+            {usd(estimate.monthlyTotal)}/mo
+          </p>
+          <p className="mt-1 text-[13px] text-ink-muted">
+            <span className="tnum">{usd(estimate.homePrice)}</span> ·{" "}
+            {estimate.programLabel} ·{" "}
+            <span className="tnum">{estimate.downPct}%</span> down ·{" "}
+            <span className="tnum">{estimate.years}</span> yr
+          </p>
+          <a
+            href="#estimate"
+            className="mt-2 inline-block text-[13px] text-brick underline underline-offset-4 hover:text-brick-deep"
+          >
+            Change these numbers
+          </a>
+        </div>
+      )}
+
       <div className="mb-7 flex items-center gap-3">
-        <span className="tnum text-[12px] text-ink-faint">
+        <span className="tnum text-[13px] text-ink-faint">
           {stepIndex}/3
         </span>
         <div className="flex flex-1 gap-2" aria-hidden="true">
@@ -137,8 +168,8 @@ export function StartForm() {
 
       {stage === "contact" && (
         <form onSubmit={handleSubmit} noValidate>
-          <h3 className="text-[26px]">Where should Josh reach you?</h3>
-          <p className="mt-2 text-[14px] text-ink-muted">
+          <h3 className="text-[24px]">Where should Josh reach you?</h3>
+          <p className="mt-2 text-[15px] text-ink-muted">
             No credit pull, no application. Just a conversation.
           </p>
 
@@ -173,7 +204,7 @@ export function StartForm() {
           {error && (
             <p
               role="alert"
-              className="mt-4 rounded-[2px] border border-brick/40 bg-brick/5 px-4 py-3 text-[14px] text-brick-deep"
+              className="mt-4 rounded-[2px] border border-brick/40 bg-brick/5 px-4 py-3 text-[15px] text-brick-deep"
             >
               {error}
             </p>
@@ -183,7 +214,7 @@ export function StartForm() {
             {submitting ? "Sending…" : "Send to Josh"}
           </Button>
 
-          <p className="mt-4 text-[12px] leading-relaxed text-ink-faint">
+          <p className="mt-4 text-[13px] leading-relaxed text-ink-faint">
             Your information goes to Josh directly. It is never sold or shared
             with lead aggregators.
           </p>
@@ -208,7 +239,7 @@ function Choice({
 }) {
   return (
     <fieldset className="border-0 p-0">
-      <legend className="mb-5 font-display text-[26px] leading-tight">
+      <legend className="mb-5 font-display text-[24px] leading-tight">
         {legend}
       </legend>
       <div className="grid gap-2">

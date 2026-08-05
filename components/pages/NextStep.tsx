@@ -24,11 +24,11 @@ export function NextStep({
         <div className="border-t border-rule pt-8 lg:pt-4">
           <a
             href={site.loanOfficer.phoneHref}
-            className="tnum block text-[clamp(1.75rem,6vw,2.25rem)] leading-none hover:text-brick"
+            className="tnum block text-[clamp(1.875rem,6vw,2.25rem)] leading-none hover:text-brick"
           >
             {site.loanOfficer.phone}
           </a>
-          <p className="mt-3 text-[14px] text-ink-faint">
+          <p className="mt-3 text-[15px] text-ink-faint">
             {site.loanOfficer.name}, {site.loanOfficer.title} ·{" "}
             <span className="tnum">NMLS #{site.loanOfficer.nmls}</span>
           </p>
@@ -72,7 +72,7 @@ export function OtherPrograms({ current }: { current: ProgramSlug }) {
                   from <span className="tnum text-brick">{p.facts[0].value}</span>{" "}
                   down
                 </span>
-                <span className="mt-3 text-[14px] leading-snug text-ink-muted">
+                <span className="mt-3 text-[15px] leading-snug text-ink-muted">
                   {p.lead.split(". ")[0]}.
                 </span>
               </Link>
@@ -115,7 +115,7 @@ export function CalculatorNav({ exclude }: { exclude?: string }) {
               <span className="font-display text-[24px] leading-none">
                 {c.name}
               </span>
-              <span className="mt-3 text-[14px] leading-snug text-ink-muted">
+              <span className="mt-3 text-[15px] leading-snug text-ink-muted">
                 {c.blurb}
               </span>
             </Link>

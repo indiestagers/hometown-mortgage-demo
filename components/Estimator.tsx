@@ -4,6 +4,7 @@ import { useId, useMemo, useState } from "react";
 import { estimatePayment, usd, clamp } from "@/lib/mortgage";
 import { programs } from "@/site.config";
 import { Button } from "./primitives";
+import { useEstimate } from "./EstimateContext";
 
 type ProgramSlug = "conventional" | "fha" | "va" | "usda";
 
@@ -20,6 +21,7 @@ const MIN_DOWN: Record<ProgramSlug, number> = {
  */
 export function Estimator() {
   const uid = useId();
+  const { setEstimate } = useEstimate();
   const [price, setPrice] = useState(325_000);
   const [downPct, setDownPct] = useState(5);
   const [rate, setRate] = useState(6.5);
@@ -79,7 +81,7 @@ export function Estimator() {
                       setProgram(p.slug as ProgramSlug);
                       setDownPct((d) => Math.max(d, MIN_DOWN[p.slug as ProgramSlug]));
                     }}
-                    className={`rounded-[2px] border px-4 py-2 text-[14px] transition-colors duration-[160ms] ${
+                    className={`rounded-[2px] border px-4 py-2 text-[15px] transition-colors duration-[160ms] ${
                       active
                         ? "border-brick bg-brick text-paper"
                         : "border-rule text-ink-muted hover:border-ink hover:text-ink"
@@ -144,7 +146,7 @@ export function Estimator() {
                      text, which reads "15 yr" — not "15 year". */
                   aria-label={`${y} yr term`}
                   onClick={() => setYears(y)}
-                  className={`rounded-[2px] border px-4 py-2 text-[14px] transition-colors duration-[160ms] ${
+                  className={`rounded-[2px] border px-4 py-2 text-[15px] transition-colors duration-[160ms] ${
                     years === y
                       ? "border-ink bg-ink text-paper"
                       : "border-rule text-ink-muted hover:border-ink hover:text-ink"
@@ -162,7 +164,7 @@ export function Estimator() {
       <div className="bg-paper-sunk p-7 md:p-9">
         <p className="text-[13px] text-ink-muted">Estimated monthly payment</p>
         <p
-          className="tnum mt-2 text-[44px] leading-none text-ink"
+          className="tnum mt-2 text-[40px] leading-none text-ink"
           aria-live="polite"
           aria-atomic="true"
         >
@@ -178,15 +180,15 @@ export function Estimator() {
               key={r.label}
               className="flex items-baseline justify-between border-b border-rule py-3"
             >
-              <dt className="text-[14px] text-ink-muted">{r.label}</dt>
-              <dd className="tnum text-[14px] text-ink">
+              <dt className="text-[15px] text-ink-muted">{r.label}</dt>
+              <dd className="tnum text-[15px] text-ink">
                 {r.value > 0 ? usd(r.value) : "—"}
               </dd>
             </div>
           ))}
         </dl>
 
-        <p className="mt-5 text-[12px] leading-relaxed text-ink-faint">
+        <p className="mt-5 text-[13px] leading-relaxed text-ink-faint">
           An estimate, not a pre-approval. Taxes assume a 1.3% effective KC-metro
           rate and insurance $1,800/yr; your actual figures depend on the property,
           your credit, and current pricing.
@@ -195,6 +197,18 @@ export function Estimator() {
         <Button
           className="mt-6 w-full"
           onClick={() => {
+            // Hand the numbers to the lead form instead of discarding them.
+            setEstimate({
+              homePrice: price,
+              downPct: effectiveDown,
+              ratePct: rate,
+              years,
+              program,
+              programLabel:
+                programs.find((p) => p.slug === program)?.name ?? program,
+              monthlyTotal: result.total,
+              loanAmount: result.loanAmount,
+            });
             document
               .getElementById("start")
               ?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -250,7 +264,7 @@ function Slider({
         className="mt-3 h-1 w-full cursor-pointer appearance-none rounded-full bg-rule accent-brick"
       />
       {note && (
-        <p id={`${id}-note`} className="mt-2 text-[12px] text-ink-faint">
+        <p id={`${id}-note`} className="mt-2 text-[13px] text-ink-faint">
           {note}
         </p>
       )}

@@ -65,7 +65,7 @@ export function Slider({
         className={THUMB}
       />
       {note && (
-        <p id={`${id}-note`} className="mt-1 text-[12px] text-ink-faint">
+        <p id={`${id}-note`} className="mt-1 text-[13px] text-ink-faint">
           {note}
         </p>
       )}
@@ -118,7 +118,7 @@ export function MoneyField({
         />
       </div>
       {note && (
-        <p id={`${id}-note`} className="mt-1.5 text-[12px] text-ink-faint">
+        <p id={`${id}-note`} className="mt-1.5 text-[13px] text-ink-faint">
           {note}
         </p>
       )}
@@ -168,7 +168,7 @@ export function Segmented<T extends string | number>({
               aria-checked={active}
               aria-label={o.a11yLabel}
               onClick={() => onChange(o.value)}
-              className={`min-h-[44px] rounded-[2px] border px-3 py-2 text-[14px] transition-colors duration-[160ms] ease-[cubic-bezier(0.2,0,0,1)] ${
+              className={`min-h-[44px] rounded-[2px] border px-3 py-2 text-[15px] transition-colors duration-[160ms] ease-[cubic-bezier(0.2,0,0,1)] ${
                 active
                   ? "border-brick bg-brick text-paper"
                   : "border-rule text-ink-muted hover:border-ink hover:text-ink"
@@ -195,11 +195,11 @@ export function ResultRow({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-rule py-2.5">
-      <dt className={`text-[14px] ${emphasis ? "text-ink" : "text-ink-muted"}`}>
+      <dt className={`text-[15px] ${emphasis ? "text-ink" : "text-ink-muted"}`}>
         {label}
       </dt>
       <dd
-        className={`tnum shrink-0 text-[14px] ${emphasis ? "text-ink" : "text-ink"}`}
+        className={`tnum shrink-0 text-[15px] ${emphasis ? "text-ink" : "text-ink"}`}
       >
         {value}
       </dd>
@@ -221,7 +221,7 @@ export function Headline({
     <div>
       <p className="text-[13px] text-ink-muted">{caption}</p>
       <p
-        className="tnum mt-2 text-[clamp(2rem,7vw,2.75rem)] leading-none text-ink"
+        className="tnum mt-2 text-[clamp(1.875rem,7vw,2.75rem)] leading-none text-ink"
         aria-live="polite"
         aria-atomic="true"
       >

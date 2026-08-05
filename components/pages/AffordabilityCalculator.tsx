@@ -222,7 +222,7 @@ export function AffordabilityCalculator() {
             the roof you will replace in year four.
           </p>
 
-          <p className="mt-4 text-[12px] leading-relaxed text-ink-faint">
+          <p className="mt-4 text-[13px] leading-relaxed text-ink-faint">
             {ESTIMATE_DISCLAIMER} Taxes assume a 1.3% effective KC-metro rate and
             insurance of $1,800 a year; HOA dues and closing costs are not
             included.

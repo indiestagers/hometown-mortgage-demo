@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { site, programs, testimonials, brokerage } from "@/site.config";
 import { Header, Footer } from "@/components/Chrome";
+import { MobileBar } from "@/components/MobileBar";
 import { LedgerRail } from "@/components/LedgerRail";
 import { Estimator } from "@/components/Estimator";
 import { StartForm } from "@/components/StartForm";
 import { Reveal } from "@/components/Reveal";
+import { EstimateProvider } from "@/components/EstimateContext";
 import { LineReveal } from "@/components/motion/LineReveal";
 import { PinnedProcess } from "@/components/motion/PinnedProcess";
 import { HeroPlate } from "@/components/motion/HeroPlate";
@@ -20,6 +22,7 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default function Home() {
   return (
+    <EstimateProvider>
     <div className="flex">
       <LedgerRail />
 
@@ -38,8 +41,10 @@ export default function Home() {
         </main>
 
         <Footer />
+        <MobileBar />
       </div>
     </div>
+    </EstimateProvider>
   );
 }
 
@@ -65,7 +70,7 @@ function Hero() {
           <LineReveal
             immediate
             as="h1"
-            className="mt-6 text-paper text-[40px] leading-[1.06] md:text-[56px] lg:text-[64px]"
+            className="mt-6 text-paper text-[30px] leading-[1.08] sm:text-[40px] md:text-[56px]"
             lines={["A mortgage broker", "who answers", "his own phone."]}
           />
 
@@ -107,10 +112,10 @@ function Hero() {
                 key={s.v}
                 className="flex items-baseline gap-5 border-b border-[color:var(--color-rule-dim)] py-4"
               >
-                <dt className="tnum w-24 shrink-0 text-[19px] leading-none text-paper">
+                <dt className="tnum w-24 shrink-0 text-[20px] leading-none text-paper">
                   {s.k}
                 </dt>
-                <dd className="text-[14px] leading-snug text-[color:var(--color-paper-dim)]">{s.v}</dd>
+                <dd className="text-[15px] leading-snug text-[color:var(--color-paper-dim)]">{s.v}</dd>
               </div>
             ))}
           </dl>
@@ -226,7 +231,7 @@ function Programs() {
           <Reveal key={p.slug} delay={i * 60}>
             <article className="grid gap-6 border-b border-rule py-9 md:grid-cols-[auto_1fr_1fr] md:gap-12">
               <div className="md:w-32">
-                <h3 className="text-[28px] leading-none">{p.name}</h3>
+                <h3 className="text-[30px] leading-none">{p.name}</h3>
                 <p className="mt-3 text-[13px] text-ink-faint">
                   from <span className="tnum text-brick">{p.down}</span> down
                 </p>
@@ -234,7 +239,7 @@ function Programs() {
 
               <div>
                 <p className="text-ink-muted">{p.summary}</p>
-                <p className="mt-4 text-[14px] text-ink">
+                <p className="mt-4 text-[15px] text-ink">
                   <span className="text-ink-faint">Best for: </span>
                   {p.bestFor}
                 </p>
@@ -242,7 +247,7 @@ function Programs() {
 
               <ul className="space-y-3">
                 {p.points.map((pt) => (
-                  <li key={pt} className="flex gap-3 text-[14px] text-ink-muted">
+                  <li key={pt} className="flex gap-3 text-[15px] text-ink-muted">
                     <span
                       className="mt-2.5 h-px w-3 shrink-0 bg-brass"
                       aria-hidden="true"
@@ -367,11 +372,11 @@ function Reviews() {
           <Reveal key={t.name} delay={i * 60}>
             <figure className={i % 2 === 1 ? "md:pt-12" : ""}>
               <blockquote className="border-l border-brass pl-6">
-                <p className="font-display text-[21px] leading-[1.45] text-ink">
+                <p className="font-display text-[20px] leading-[1.45] text-ink">
                   {t.quote}
                 </p>
               </blockquote>
-              <figcaption className="mt-4 pl-6 text-[14px] text-ink-faint">
+              <figcaption className="mt-4 pl-6 text-[15px] text-ink-faint">
                 {t.name}
               </figcaption>
             </figure>
@@ -422,12 +427,12 @@ function Area() {
             {site.serviceAreas.map((a) => (
               <li
                 key={a}
-                className="bg-paper px-4 py-4 text-[14px] text-ink-muted"
+                className="bg-paper px-4 py-4 text-[15px] text-ink-muted"
               >
                 {a}
               </li>
             ))}
-            <li className="bg-paper px-4 py-4 text-[14px] text-ink-faint">
+            <li className="bg-paper px-4 py-4 text-[15px] text-ink-faint">
               + surrounding
             </li>
           </ul>
@@ -460,10 +465,10 @@ function Start() {
           </Reveal>
           <Reveal delay={180}>
             <div className="mt-9 space-y-4 border-t border-rule pt-8">
-              <p className="text-[14px] text-ink-faint">Or reach me directly:</p>
+              <p className="text-[15px] text-ink-faint">Or reach me directly:</p>
               <a
                 href={site.loanOfficer.phoneHref}
-                className="tnum block text-[26px] hover:text-brick"
+                className="tnum block text-[24px] hover:text-brick"
               >
                 {site.loanOfficer.phone}
               </a>

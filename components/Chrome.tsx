@@ -3,6 +3,16 @@ import Link from "next/link";
 import { site, brokerage } from "@/site.config";
 import { ButtonLink } from "./primitives";
 
+const SECTIONS = [
+  { id: "thesis", label: "Why me" },
+  { id: "programs", label: "Loan programs" },
+  { id: "estimate", label: "Estimate" },
+  { id: "process", label: "How it works" },
+  { id: "reviews", label: "Reviews" },
+  { id: "area", label: "Where I lend" },
+  { id: "start", label: "Get started" },
+];
+
 /** next/image does not prepend basePath when images.unoptimized is set. */
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -21,7 +31,7 @@ export function Header() {
             priority
             className="h-11 w-auto md:h-12"
           />
-          <span className="hidden text-[12px] text-ink-faint lg:inline">
+          <span className="hidden text-[13px] text-ink-faint lg:inline">
             Kansas City
           </span>
         </Link>
@@ -39,12 +49,38 @@ export function Header() {
               {site.loanOfficer.phone}
             </span>
           </a>
-          <ButtonLink
-            href="#start"
-            className="px-4 py-3 text-[15px] md:px-6"
-          >
-            Get started
-          </ButtonLink>
+          {/* Hidden on mobile: MobileBar already carries this action, and
+              `hidden` on the ButtonLink itself loses to its base `inline-flex`. */}
+          <span className="hidden sm:block">
+            <ButtonLink href="#start" className="px-4 py-3 text-[15px] md:px-6">
+              Get started
+            </ButtonLink>
+          </span>
+
+          {/* Mobile has no ledger rail, so it had no section index at all
+              across ~12,000px. <details> gives it one with no JS. */}
+          <details className="relative lg:hidden">
+            <summary className="flex cursor-pointer list-none items-center gap-2 rounded-[2px] border border-rule px-3 py-3 text-[15px] text-ink [&::-webkit-details-marker]:hidden">
+              Sections
+            </summary>
+            <nav
+              aria-label="Page sections"
+              className="absolute right-0 z-50 mt-2 w-56 rounded-[2px] border border-rule bg-paper shadow-float"
+            >
+              <ul className="py-1">
+                {SECTIONS.map((s) => (
+                  <li key={s.id}>
+                    <a
+                      href={`#${s.id}`}
+                      className="block px-4 py-3 text-[15px] text-ink-muted hover:bg-paper-sunk hover:text-ink"
+                    >
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </details>
         </div>
       </div>
     </header>
@@ -66,20 +102,20 @@ export function Footer() {
               height={252}
               className="h-16 w-auto"
             />
-            <p className="mt-2 text-[14px] text-ink-muted">
+            <p className="mt-2 text-[15px] text-ink-muted">
               {site.loanOfficer.name}, {site.loanOfficer.title}
             </p>
             <a
               href={site.loanOfficer.nmlsLookup}
               target="_blank"
               rel="noopener noreferrer"
-              className="tnum mt-1 inline-block text-[14px] text-ink-muted underline underline-offset-4 hover:text-ink"
+              className="tnum mt-1 inline-block text-[15px] text-ink-muted underline underline-offset-4 hover:text-ink"
             >
               NMLS #{site.loanOfficer.nmls}
             </a>
             <a
               href={site.loanOfficer.phoneHref}
-              className="tnum mt-4 block text-[18px] hover:text-brick"
+              className="tnum mt-4 block text-[17px] hover:text-brick"
             >
               {site.loanOfficer.phone}
             </a>
@@ -87,10 +123,10 @@ export function Footer() {
 
           <nav aria-label="Loan programs">
             <p className="eyebrow mb-3">Programs</p>
-            <ul className="space-y-2 text-[14px] text-ink-muted">
+            <ul className="text-[15px] text-ink-muted">
               {["Conventional", "FHA", "VA", "USDA"].map((p) => (
                 <li key={p}>
-                  <a href="#programs" className="hover:text-ink">
+                  <a href="#programs" className="block py-1.5 hover:text-ink">
                     {p} loans
                   </a>
                 </li>
@@ -100,9 +136,9 @@ export function Footer() {
 
           <nav aria-label="More">
             <p className="eyebrow mb-3">More</p>
-            <ul className="space-y-2 text-[14px] text-ink-muted">
+            <ul className="text-[15px] text-ink-muted">
               <li>
-                <a href="#estimate" className="hover:text-ink">
+                <a href="#estimate" className="block py-1.5 hover:text-ink">
                   Payment estimator
                 </a>
               </li>
@@ -111,7 +147,7 @@ export function Footer() {
                   href={site.loanOfficer.calendly}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-ink"
+                  className="block py-1.5 hover:text-ink"
                 >
                   Schedule a call
                 </a>
@@ -121,7 +157,7 @@ export function Footer() {
                   href={site.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-ink"
+                  className="block py-1.5 hover:text-ink"
                 >
                   Facebook
                 </a>
@@ -131,7 +167,7 @@ export function Footer() {
                   href={site.social.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-ink"
+                  className="block py-1.5 hover:text-ink"
                 >
                   Instagram
                 </a>
@@ -145,7 +181,7 @@ export function Footer() {
         <div className="mt-12 border-t border-rule pt-8">
           <div className="flex items-start gap-4">
             <EqualHousingMark />
-            <div className="text-[12px] leading-relaxed text-ink-faint">
+            <div className="text-[13px] leading-relaxed text-ink-faint">
               <p>
                 The Hometown Mortgage is a division of {brokerage.name}, NMLS{" "}
                 <span className="tnum">#{brokerage.nmls}</span>. {brokerage.address}.
@@ -172,7 +208,7 @@ export function Footer() {
             </div>
           </div>
 
-          <p className="mt-6 rounded-[2px] border border-brass/40 px-4 py-3 text-[12px] text-ink-faint">
+          <p className="mt-6 rounded-[2px] border border-brass/40 px-4 py-3 text-[13px] text-ink-faint">
             <strong className="font-medium text-ink-muted">Demo build.</strong>{" "}
             Sponsoring lender shown here is a placeholder — the live site
             currently discloses two different lenders. Confirm the correct entity

@@ -73,10 +73,10 @@ export function LedgerRail() {
         </ul>
       </nav>
 
-      <div className="text-[12px] leading-relaxed text-ink-faint">
+      <div className="text-[13px] leading-relaxed text-ink-faint">
         <a
           href={site.loanOfficer.phoneHref}
-          className="tnum block text-[14px] text-ink hover:text-brick"
+          className="tnum block text-[15px] text-ink hover:text-brick"
         >
           {site.loanOfficer.phone}
         </a>
