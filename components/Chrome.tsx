@@ -20,7 +20,7 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 // otherwise the logo misaligns with every heading above 1456px.
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-rule bg-paper/95 px-6 backdrop-blur-sm md:px-10">
+    <header className="sticky top-0 z-40 border-b border-rule bg-paper px-6 md:px-10">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 py-4">
         <Link href="/" className="flex min-w-0 items-center gap-3">
           <Image

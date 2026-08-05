@@ -57,7 +57,10 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+      // Positive bottom margin = fire BEFORE the element scrolls in.
+      // A negative margin meant large blocks were still hidden when they
+      // reached the viewport, leaving a white void mid-scroll.
+      { rootMargin: "0px 0px 20% 0px", threshold: 0 },
     );
 
     observer.observe(el);

@@ -15,7 +15,7 @@ export function MobileBar() {
   return (
     <>
       <div aria-hidden="true" className="h-[72px] lg:hidden" />
-      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-rule bg-paper/95 backdrop-blur-sm lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-rule bg-paper lg:hidden">
         <div className="flex items-stretch gap-2 px-3 py-3">
           <a
             href={site.loanOfficer.phoneHref}

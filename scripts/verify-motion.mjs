@@ -23,15 +23,18 @@ const check = (name, pass, detail) => results.push({ name, pass, detail });
 const heroShown = await page.getAttribute("h1.line-reveal", "data-shown");
 check("hero h1 paints immediately", heroShown === "true", `data-shown=${heroShown}`);
 
-// 2. Below-fold headings must start masked.
-const belowFold = await page.$$eval(
-  ".line-reveal:not(h1)",
-  (els) => els.map((e) => e.dataset.shown),
+// 2. Headings FAR below the fold must start masked. Ones within the 20%
+//    pre-trigger zone are expected to fire on load — that is deliberate, so a
+//    large block is never left blank as the user scrolls into it.
+const farBelow = await page.$$eval(".line-reveal:not(h1)", (els) =>
+  els
+    .filter((e) => e.getBoundingClientRect().top > window.innerHeight * 1.3)
+    .map((e) => e.dataset.shown),
 );
 check(
-  "below-fold headings start masked",
-  belowFold.every((v) => v === "false"),
-  `${belowFold.filter((v) => v === "false").length}/${belowFold.length} masked`,
+  "headings far below the fold start masked",
+  farBelow.length > 0 && farBelow.every((v) => v === "false"),
+  `${farBelow.filter((v) => v === "false").length}/${farBelow.length} masked`,
 );
 
 // 3. Scroll for real, then confirm they actually reveal.

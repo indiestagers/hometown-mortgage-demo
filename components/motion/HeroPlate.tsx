@@ -66,7 +66,7 @@ export function HeroPlate() {
         className="absolute inset-0 scale-[1.15] will-change-transform"
       >
       <div
-        className="absolute inset-0 bg-cover bg-center [filter:saturate(1.05)_contrast(1.02)]"
+        className="absolute inset-0 bg-cover bg-[position:50%_65%] [filter:saturate(1.05)_contrast(1.02)]"
         style={{
           backgroundImage: `url(${BASE}/media/kansas-sunflowers-poster.jpg)`,
         }}
@@ -74,7 +74,7 @@ export function HeroPlate() {
       {showVideo && (
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover [filter:saturate(1.05)_contrast(1.02)]"
+          className="absolute inset-0 h-full w-full object-cover object-[50%_65%] [filter:saturate(1.05)_contrast(1.02)]"
           src={`${BASE}/media/kansas-sunflowers.mp4`}
           poster={`${BASE}/media/kansas-sunflowers-poster.jpg`}
           muted
@@ -94,7 +94,7 @@ export function HeroPlate() {
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-ink)_2%,color-mix(in_srgb,var(--color-ink)_55%,transparent)_55%,color-mix(in_srgb,var(--color-ink)_78%,transparent)_100%)] md:bg-[linear-gradient(100deg,var(--color-ink)_28%,color-mix(in_srgb,var(--color-ink)_60%,transparent)_72%,color-mix(in_srgb,var(--color-ink)_40%,transparent)_100%)]" />
       {/* Hand the page back to paper at the bottom edge, so the dark opening
           resolves into the light editorial body instead of stopping dead. */}
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(to_bottom,transparent,var(--color-paper))]" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,var(--color-paper))]" />
     </div>
   );
 }

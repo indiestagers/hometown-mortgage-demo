@@ -56,7 +56,10 @@ export default function Home() {
    ──────────────────────────────────────────────────────────── */
 function Hero() {
   return (
-    <Section id="hero-section" className="relative bg-ink pt-20 pb-28 md:pt-28 md:pb-36">
+    <Section
+      id="hero-section"
+      className="relative flex min-h-[88svh] flex-col justify-center bg-ink pt-20 pb-28 md:pt-28 md:pb-36"
+    >
       <HeroPlate />
       <div className="relative grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
@@ -233,9 +236,9 @@ function Programs() {
           <Reveal key={p.slug} delay={i * 60}>
             <article
               data-program-row
-              className="grid gap-6 border-b border-rule py-9 will-change-transform md:grid-cols-[auto_1fr_1fr] md:gap-12"
+              className="grid gap-6 border-b border-rule py-9 md:grid-cols-[auto_1fr_1fr] md:gap-12"
             >
-              <div className="md:w-32">
+              <div>
                 <h3 className="text-[30px] leading-none">{p.name}</h3>
                 <p className="mt-3 text-[13px] text-ink-faint">
                   from <span className="tnum text-brick">{p.down}</span> down

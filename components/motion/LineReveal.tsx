@@ -51,7 +51,7 @@ export function LineReveal({
           io.disconnect();
         }
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.1 },
+      { rootMargin: "0px 0px 20% 0px", threshold: 0 },
     );
     io.observe(el);
     return () => io.disconnect();
