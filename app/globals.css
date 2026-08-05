@@ -129,9 +129,16 @@
   .hero-track {
     height: 215svh;
   }
+  /* No pin below md: the hero content is taller than a phone viewport, so
+     pinning it would hold the headline on screen while the buttons and the
+     stat ledger sat permanently below the fold. The scrub still runs, mapped
+     to scrolling through the hero. */
   @media (max-width: 767px) {
     .hero-track {
-      height: 185svh;
+      height: auto;
+    }
+    .hero-track > section {
+      position: static;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -141,6 +148,17 @@
     .hero-track > section {
       position: static;
     }
+  }
+}
+
+/* Hero type sits directly on the image now that the scrim is even rather than
+   a black-left gradient. A soft shadow keeps it legible over any frame without
+   dimming the picture. Cheap: no extra layers, no repaint on scroll. */
+@layer utilities {
+  .hero-type {
+    text-shadow:
+      0 1px 2px color-mix(in srgb, var(--color-ink) 62%, transparent),
+      0 2px 14px color-mix(in srgb, var(--color-ink) 78%, transparent);
   }
 }
 

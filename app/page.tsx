@@ -64,7 +64,7 @@ function Hero() {
     <div id="hero-track" className="hero-track relative bg-ink">
     <Section
       id="hero-section"
-      className="sticky top-0 flex min-h-[100svh] flex-col justify-center overflow-hidden bg-ink pt-24 pb-20 md:pt-28 md:pb-24"
+      className="sticky top-0 flex min-h-[100svh] flex-col justify-center overflow-hidden bg-ink pt-24 pb-36 md:pt-28 md:pb-32"
     >
       {HERO === "build" ? <HeroBuild /> : <HeroPlate />}
       <div className="relative grid items-start gap-x-16 gap-y-12 lg:grid-cols-[1.15fr_0.85fr]">
@@ -72,7 +72,7 @@ function Hero() {
           <Reveal immediate>
             <div className="flex items-center gap-3">
               <span className="rule-brass" aria-hidden="true" />
-              <span className="eyebrow !text-[color:var(--color-paper-dim)]">
+              <span className="hero-type eyebrow !text-paper">
                 Kansas City · Kansas &amp; Missouri
               </span>
             </div>
@@ -81,12 +81,12 @@ function Hero() {
           <LineReveal
             immediate
             as="h1"
-            className="mt-6 text-paper text-[30px] leading-[1.08] sm:text-[40px] md:text-[56px]"
+            className="hero-type mt-6 text-paper text-[30px] leading-[1.08] sm:text-[40px] md:text-[56px]"
             lines={["A mortgage broker", "who answers", "his own phone."]}
           />
 
           <Reveal immediate delay={120}>
-            <p className="measure mt-6 text-[20px] text-[color:var(--color-paper-dim)]">
+            <p className="hero-type measure mt-6 text-[20px] text-paper">
               I&apos;m Josh Pennebaker. I&apos;ve spent my career doing home loans
               in the Kansas City metro — and I do it the way I&apos;d want it done
               for my own family. You get my direct line, not a queue.
@@ -123,10 +123,10 @@ function Hero() {
                 key={s.v}
                 className="flex items-baseline gap-5 border-b border-[color:var(--color-rule-dim)] py-4"
               >
-                <dt className="tnum w-24 shrink-0 text-[20px] leading-none text-paper">
+                <dt className="hero-type tnum w-24 shrink-0 text-[20px] leading-none text-paper">
                   {s.k}
                 </dt>
-                <dd className="text-[15px] leading-snug text-[color:var(--color-paper-dim)]">{s.v}</dd>
+                <dd className="hero-type text-[15px] leading-snug text-paper">{s.v}</dd>
               </div>
             ))}
           </dl>

@@ -112,9 +112,14 @@ export function HeroBuild() {
       // only lasts (trackHeight - viewportHeight), so progress must map to THAT
       // — mapping to the full track height would leave the transformation about
       // half done at the moment the pin releases.
+      // Desktop pins the hero, so progress maps to the pinned distance
+      // (track - viewport). Mobile does not pin — the hero is taller than the
+      // viewport there, and pinning would cut off the buttons and the ledger —
+      // so progress maps to scrolling through the hero itself.
       const pinnable = r.height - window.innerHeight;
-      if (pinnable <= 0) return;
-      const p = Math.min(1, Math.max(0, -r.top / pinnable));
+      const span = pinnable > 80 ? pinnable : r.height;
+      if (span <= 0) return;
+      const p = Math.min(1, Math.max(0, -r.top / span));
       target = p * (duration - 0.05);
       if (!frame) frame = requestAnimationFrame(tick);
     };
@@ -152,13 +157,13 @@ export function HeroBuild() {
           detail instead of the house. Anchor it as a band across the lower
           hero and leave clean ink up top, where the headline sits. */}
       <div
-        className="absolute inset-x-0 bottom-0 h-[74%] bg-cover bg-bottom md:h-[78%]"
+        className="absolute inset-x-0 bottom-0 h-[42%] bg-cover bg-bottom [filter:brightness(1.7)_contrast(1.12)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] md:h-[78%]"
         style={{ backgroundImage: `url(${poster})` }}
       />
       {mounted && !reduced && (
         <video
           ref={videoRef}
-          className="absolute inset-x-0 bottom-0 h-[74%] w-full object-cover object-bottom md:h-[78%]"
+          className="absolute inset-x-0 bottom-0 h-[42%] w-full object-cover object-bottom [filter:brightness(1.7)_contrast(1.12)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_16%)] md:h-[78%]"
           src={`${BASE}/media/house-build.mp4`}
           poster={poster}
           muted
@@ -170,8 +175,12 @@ export function HeroBuild() {
       {/* Warm ink scrim, same two-layer construction as before: a flat wash so
           no frame can drop text contrast below AA, plus a directional gradient
           heaviest where the headline sits. */}
-      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-ink)_38%,transparent)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-ink)_2%,color-mix(in_srgb,var(--color-ink)_48%,transparent)_52%,color-mix(in_srgb,var(--color-ink)_70%,transparent)_100%)] md:bg-[linear-gradient(100deg,var(--color-ink)_24%,color-mix(in_srgb,var(--color-ink)_46%,transparent)_66%,color-mix(in_srgb,var(--color-ink)_20%,transparent)_100%)]" />
+      {/* EVEN scrim across the whole plate. A directional gradient protected
+          the headline by blacking out the left third, which killed the picture
+          exactly where the drawing is most legible. The text carries its own
+          legibility instead (see .hero-type in globals.css). */}
+      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-ink)_64%,transparent)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--color-ink)_86%,transparent)_0%,color-mix(in_srgb,var(--color-ink)_34%,transparent)_34%,color-mix(in_srgb,var(--color-ink)_34%,transparent)_72%,color-mix(in_srgb,var(--color-ink)_62%,transparent)_100%)]" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,var(--color-paper))]" />
     </div>
   );
