@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site, brokerage } from "@/site.config";
-import { ButtonLink } from "./primitives";
 
 const SECTIONS = [
   { id: "thesis", label: "Why me" },
@@ -11,6 +10,7 @@ const SECTIONS = [
   { id: "reviews", label: "Reviews" },
   { id: "area", label: "Where I lend" },
   { id: "start", label: "Get started" },
+  { id: "contact", label: "Contact" },
 ];
 
 /** next/image does not prepend basePath when images.unoptimized is set. */
@@ -49,17 +49,24 @@ export function Header() {
               {site.loanOfficer.phone}
             </span>
           </a>
-          {/* Hidden on mobile: MobileBar already carries this action, and
-              `hidden` on the ButtonLink itself loses to its base `inline-flex`. */}
+          {/* Primary action on a lead-gen site is booking time, so this opens
+              Calendly directly rather than scrolling to a form. Hidden on
+              mobile because MobileBar carries it; `hidden` on the ButtonLink
+              itself would lose to its base `inline-flex`. */}
           <span className="hidden sm:block">
-            <ButtonLink href="#start" className="px-4 py-3 text-[15px] md:px-6">
-              Get started
-            </ButtonLink>
+            <a
+              href={site.loanOfficer.calendly}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[2px] bg-brick px-4 py-3 text-[15px] font-medium text-paper transition-colors duration-[160ms] hover:bg-brick-deep md:px-6"
+            >
+              Schedule a meeting
+            </a>
           </span>
 
           {/* Mobile has no ledger rail, so it had no section index at all
               across ~12,000px. <details> gives it one with no JS. */}
-          <details className="relative lg:hidden">
+          <details className="relative">
             <summary className="flex cursor-pointer list-none items-center gap-2 rounded-[2px] border border-rule px-3 py-3 text-[15px] text-ink [&::-webkit-details-marker]:hidden">
               Sections
             </summary>

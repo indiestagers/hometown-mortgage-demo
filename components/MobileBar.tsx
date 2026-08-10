@@ -37,10 +37,12 @@ export function MobileBar() {
             <span className="tnum whitespace-nowrap">{site.loanOfficer.phone}</span>
           </a>
           <a
-            href="#start"
-            className="flex flex-1 items-center justify-center rounded-[2px] bg-brick px-4 py-3 text-[15px] font-medium text-paper transition-colors duration-[160ms] hover:bg-brick-deep"
+            href={site.loanOfficer.calendly}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-1 items-center justify-center whitespace-nowrap rounded-[2px] bg-brick px-4 py-3 text-[15px] font-medium text-paper transition-colors duration-[160ms] hover:bg-brick-deep"
           >
-            Get started
+            Schedule
           </a>
         </div>
       </div>

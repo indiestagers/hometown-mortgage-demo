@@ -3,9 +3,9 @@ import Link from "next/link";
 import { site, programs, testimonials, brokerage } from "@/site.config";
 import { Header, Footer } from "@/components/Chrome";
 import { MobileBar } from "@/components/MobileBar";
-import { LedgerRail } from "@/components/LedgerRail";
 import { Estimator } from "@/components/Estimator";
 import { StartForm } from "@/components/StartForm";
+import { ContactForm } from "@/components/ContactForm";
 import { Reveal } from "@/components/Reveal";
 import { EstimateProvider } from "@/components/EstimateContext";
 import { ScrollFX } from "@/components/motion/ScrollFX";
@@ -29,11 +29,9 @@ const HERO: "build" | "plate" = "build";
 export default function Home() {
   return (
     <EstimateProvider>
-    <div className="flex">
+    <div>
       <ScrollFX />
-      <LedgerRail />
-
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0">
         <Header />
 
         <main id="main">
@@ -45,6 +43,7 @@ export default function Home() {
           <Reviews />
           <Area />
           <Start />
+          <Contact />
         </main>
 
         <Footer />
@@ -134,6 +133,55 @@ function Hero() {
       </div>
     </Section>
     </div>
+  );
+}
+
+/* ── Contact ────────────────────────────────────────────────── */
+function Contact() {
+  return (
+    <Section id="contact" className="border-t border-rule bg-paper-sunk py-12 md:py-16">
+      <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
+        <div>
+          <Reveal>
+            <Eyebrow>Contact</Eyebrow>
+          </Reveal>
+          <LineReveal
+            delay={0.05}
+            className="mt-6 text-[30px] leading-[1.08] md:text-[40px]"
+            lines={["Questions first?", "Ask away."]}
+          />
+          <Reveal delay={120}>
+            <p className="measure mt-6 text-ink-muted">
+              Not ready to start an application — just want a straight answer
+              about rates, timing, or whether a program fits? Send it here and
+              Josh will reply himself.
+            </p>
+          </Reveal>
+          <Reveal delay={180}>
+            <div className="mt-9 space-y-3 border-t border-rule pt-8 text-[15px]">
+              <a
+                href={site.loanOfficer.phoneHref}
+                className="tnum block text-[24px] hover:text-brick"
+              >
+                {site.loanOfficer.phone}
+              </a>
+              <a
+                href={site.loanOfficer.calendly}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-brick underline underline-offset-4 hover:text-brick-deep"
+              >
+                Or book a time on my calendar →
+              </a>
+            </div>
+          </Reveal>
+        </div>
+
+        <Reveal delay={120}>
+          <ContactForm />
+        </Reveal>
+      </div>
+    </Section>
   );
 }
 

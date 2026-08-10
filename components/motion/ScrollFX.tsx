@@ -25,18 +25,6 @@ export function ScrollFX() {
     import("motion").then(({ scroll, animate }) => {
       if (cancelled) return;
 
-      // 1. Page progress. The ledger rail is the page's spine; giving it a
-      //    fill turns it into a read-position indicator instead of a static
-      //    list. transform-based, so it composites.
-      const bar = document.querySelector<HTMLElement>("[data-scroll-progress]");
-      if (bar) {
-        stops.push(
-          scroll(
-            animate(bar, { scaleY: [0, 1] }, { ease: "linear" }),
-          ),
-        );
-      }
-
       // 2. Hero plate parallax. The sunflower drifts slower than the page, so
       //    the opening gains depth without the headline moving. Small offset
       //    on purpose — big parallax is the tell of a template.

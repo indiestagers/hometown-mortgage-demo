@@ -7,9 +7,8 @@ import { Eyebrow, Section } from "@/components/primitives";
  * Chrome wrapper for every non-home route. Header and Footer come from
  * components/Chrome.tsx unmodified so the chrome is identical site-wide.
  *
- * The homepage's LedgerRail is deliberately not used here: its section index
- * is hard-coded to the homepage anchors, so on any other route it would
- * render a nav of links that go nowhere.
+ * The header carries the section menu; on non-home routes those anchors do
+ * not exist, which is why this shell renders chrome only.
  */
 export function PageShell({ children }: { children: ReactNode }) {
   return (

@@ -93,6 +93,17 @@ export const site = {
   ],
 } as const;
 
+/**
+ * Form delivery. Set `contactEndpoint` to the Google Apps Script Web App URL
+ * once it is deployed — see docs/GOOGLE-SHEETS.md. Until then the contact form
+ * disables its own submit button and says so, rather than accepting messages
+ * and dropping them.
+ */
+export const forms = {
+  /** NEEDS_CONFIRMATION — paste the /exec URL from the Apps Script deployment. */
+  contactEndpoint: "" as string,
+} as const;
+
 export const programs = [
   {
     slug: "conventional",
